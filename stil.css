@@ -319,6 +319,15 @@ label.haken input { width: auto; }
 .urkunde .u-name { font-size: 27px; font-weight: 800; margin: 10px 0 4px; overflow-wrap: anywhere; }
 .urkunde .u-text { font-size: 14px; line-height: 1.6; margin: 8px auto; max-width: 30em; }
 .urkunde .u-platz { font-size: 17px; font-weight: 700; margin: 10px 0; }
+.urkunde .u-ehre { font-style: italic; }
+.urkunde .u-linie {
+  display: flex; align-items: center; gap: 10px;
+  margin: 10px auto; max-width: 24em; font-size: 13px;
+}
+.urkunde .u-linie::before, .urkunde .u-linie::after {
+  content: ""; flex: 1; height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
 .urkunde .u-fuss {
   display: flex; justify-content: space-between; margin-top: 24px;
   font-size: 11.5px; color: #6b7280; border-top: 1px solid #e3d9bd; padding-top: 8px;
@@ -328,9 +337,27 @@ label.haken input { width: auto; }
   #kopf, #navi, #konfetti, .nicht-drucken, .hinweis, .kommentar { display: none !important; }
   body { padding: 0; background: #fff; }
   #inhalt { padding: 0; max-width: none; }
+  /* Gedruckt darf die Urkunde deutlich groesser auftreten als auf dem Handy –
+     sonst steht ein kleiner Textblock verloren mitten auf dem A4-Blatt. */
   .urkunde {
     page-break-after: always; margin: 0; min-height: 96vh;
     display: flex; flex-direction: column; justify-content: center;
+    border-width: 5px; outline-offset: 9px; padding: 30px 34px;
+  }
+  .urkunde .kranz { font-size: 66px; }
+  .urkunde .u-titel { font-size: 34px; letter-spacing: .3em; margin: 12px 0 4px; }
+  .urkunde .u-anlass { font-size: 15px; margin-bottom: 20px; }
+  .urkunde .u-linie { margin: 20px auto; max-width: 30em; font-size: 17px; }
+  .urkunde .u-name { font-size: 48px; margin: 6px 0; }
+  .urkunde .u-text { font-size: 18.5px; line-height: 1.65; max-width: 26em; margin: 12px auto; }
+  .urkunde .u-platz { font-size: 25px; margin: 18px 0; }
+  .urkunde .u-ehre { font-size: 17px; }
+  /* Die Unterschriftszeile gehoert an den unteren Rand des Rahmens,
+     der Rest bleibt mittig. */
+  .urkunde { position: relative; }
+  .urkunde .u-fuss {
+    position: absolute; left: 34px; right: 34px; bottom: 26px;
+    font-size: 13.5px; margin-top: 0; padding-top: 12px;
   }
   @page { size: A4; margin: 12mm; }
 }

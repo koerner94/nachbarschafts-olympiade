@@ -726,12 +726,14 @@ function ansichtUrkunden() {
       <div class="kranz">${gewonnen ? '🏆' : '🎖️'}</div>
       <div class="u-titel">Urkunde</div>
       <div class="u-anlass">${esc(k.titel)}${k.datum ? ' · ' + esc(k.datum) : ''}${k.ort ? ' · ' + esc(k.ort) : ''}</div>
+      <div class="u-linie" aria-hidden="true"><span>🌿</span></div>
       <div class="u-name">${esc(p.name)}</div>
       <div class="u-text">hat an der Nachbarschafts-Olympiade teilgenommen und für
         <b style="color:${tm.farbe}">${esc(tm.name)}</b> gekämpft.</div>
       <div class="u-platz">${gewonnen ? '🥇 Siegerteam' : sieger === null ? '🤝 Unentschieden' : '🥈 Zweiter Platz'}
         · ${punkte[p.team] % 1 ? punkte[p.team].toFixed(1) : punkte[p.team]} Punkte</div>
-      ${ehre ? `<div class="u-text" style="font-style:italic">Besondere Auszeichnung: <b>${esc(ehre)}</b></div>` : ''}
+      ${ehre ? `<div class="u-text u-ehre">Besondere Auszeichnung: <b>${esc(ehre)}</b></div>` : ''}
+      <div class="u-linie" aria-hidden="true"><span>🌿</span></div>
       <div class="u-fuss"><span>${esc(k.untertitel || '')}</span><span>Unterschrift: ______________</span></div>
     </div>`;
   };
