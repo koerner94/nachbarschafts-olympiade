@@ -51,7 +51,7 @@ Zeiten ändern: `daten/ablauf.json`.
 |---|---|---|---|
 | 15:00 | | Ankommen & Begrüßung, gegen 15:25 **Auslosung in der App** | 30 min |
 | **15:30** | 1 | XXL Jenga | 20 min |
-| 15:55 | 2 | Sackwerfen – *Toni steigt hier ein* | 15 min |
+| 15:55 | 2 | Sackwerfen | 15 min |
 | 16:15 | 3 | Blind schmecken | 15 min |
 | 16:35 | 4 | Dosenwerfen | 12 min |
 | 16:50 | 5 | Wäschekorb-Basketball | 12 min |
@@ -67,13 +67,6 @@ Zeiten ändern: `daten/ablauf.json`.
 Zwischen den Spielen sind jeweils 3 bis 5 Minuten zum Umbauen eingeplant.
 Der frühere Start verschafft euch **20 Minuten Puffer vor dem Essen** – die waren
 vorher nicht da.
-
-### Toni
-
-Toni steht ganz normal in der Auslosung und bekommt damit ein zufälliges Team –
-er kommt nur später dazu. In der Teams-Liste steht bei ihm „kommt gegen 16 Uhr".
-Durch den früheren Start verpasst er jetzt XXL Jenga und eventuell den Anfang
-vom Sackwerfen.
 
 ### Achtung Tageslicht
 
