@@ -4,22 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Nachbarschafts-Olympiade</title>
-<meta name="theme-color" content="#14532d">
+<meta name="theme-color" content="#0b1f3a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏅</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
 <link rel="stylesheet" href="stil.css">
 </head>
 <body>
 
 <header id="kopf">
   <div class="kopf-zeile">
+    <div id="fackel" class="fackel aus" title="Das olympische Feuer der Nachbarschaft">
+      <span class="flamme"></span><span class="schale"></span><span class="stiel"></span>
+    </div>
     <h1 id="kopf-titel">Nachbarschafts-Olympiade</h1>
+    <button id="knopf-ton" class="icon-knopf" title="Ton an/aus" aria-label="Ton an oder aus">🔊</button>
     <button id="knopf-neu" class="icon-knopf" title="Neu laden" aria-label="Neu laden">⟳</button>
   </div>
   <p id="kopf-unter"></p>
   <p id="stand-info" class="stand-info"></p>
+  <div class="lorbeer-linie" aria-hidden="true"><span>🌿</span></div>
 </header>
 
 <main id="inhalt"><p class="laden">Lade …</p></main>
@@ -31,6 +36,8 @@
   <button data-ansicht="eintragen"><span>✏️</span>Eintragen</button>
   <button data-ansicht="urkunden"><span>📜</span>Urkunden</button>
 </nav>
+
+<canvas id="konfetti" aria-hidden="true"></canvas>
 
 <div id="dialog" class="dialog" hidden>
   <div class="dialog-karte">

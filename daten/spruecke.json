@@ -1,0 +1,113 @@
+{
+  "_hinweis": "Die Sprüche von Kalle vom Balkon. {f} = führendes Team, {v} = verfolgendes Team, {d} = Punkteabstand. Die App merkt sich, welcher Spruch schon dran war, und wiederholt keinen, solange noch ungenutzte übrig sind. Neue Sprüche einfach in die passende Liste eintragen.",
+  "kommentator": "Kalle vom Balkon",
+
+  "start": [
+    "Die Bahnen sind frei, die Grills noch kalt, die Nerven schon blank. Es kann losgehen!",
+    "Noch null zu null. Statistisch gesehen die gerechteste Phase des ganzen Tages.",
+    "Beide Teams bei null Punkten. So ausgeglichen wird es heute nie wieder, genießt das.",
+    "Hier ist noch alles offen. Sogar die Gartenpforte.",
+    "Ich sehe aufgewärmte Waden und deutlich zu große Ambitionen. Wunderbar.",
+    "Die Wettbüros haben zugemacht, weil sich niemand festlegen wollte. Sehr vernünftig.",
+    "Noch kein Punkt vergeben, noch kein Grasfleck vergossen. Ein Moment zum Erinnern.",
+    "Stimmung: gespannt. Untergrund: uneben. Regeln: verhandelbar. Perfekt.",
+    "Die Aufstellung steht. Es fehlt nur noch der Startschuss und ein bisschen Ernsthaftigkeit.",
+    "Meine Damen und Herren, die Straße hält den Atem an. Und zwar schon eine ganze Weile.",
+    "Alles auf Anfang. Der Rasen ist unschuldig, die Teams sind es nicht.",
+    "Gleich fällt der Startschuss. Falls jemand die Startpistole findet."
+  ],
+
+  "gleich": [
+    "Punktgleich. Der Schiedsrichter schwitzt, obwohl er gar nicht mitläuft.",
+    "Gleichstand. Das ist entweder große Spannung oder große Planung.",
+    "Beide Teams punktgleich. Sportgeschichte für diese Straße.",
+    "So ausgeglichen war die Nachbarschaft zuletzt bei der Frage nach der Heckenhöhe.",
+    "Ein Gleichstand wie aus dem Lehrbuch. Falls jemand ein Lehrbuch führt.",
+    "Punkt für Punkt gleichauf. Ich schlage vor, wir klären das beim Tauziehen.",
+    "Niemand vorn, niemand hinten. Das nenne ich gelebte Nachbarschaft.",
+    "Gleichstand. Jetzt zählt jeder Wurf, jeder Schritt und jeder Schluck."
+  ],
+
+  "knapp": [
+    "{f} führt hauchdünn. Ein Stolperer, und alles dreht sich.",
+    "{f} liegt vorn, aber so knapp, dass {v} es noch gar nicht bemerkt hat.",
+    "Zwischen {f} und {v} passt kein Blatt Papier. Nicht mal ein Wäschezettel.",
+    "{f} hat die Nase vorn. Die Nase. Mehr ist es nicht.",
+    "Das ist enger als die Parklücke vor Nummer 12.",
+    "{v} atmet {f} im Nacken. Und zwar deutlich hörbar.",
+    "{f} führt. Ich würde jetzt trotzdem nichts feiern, was man zurücknehmen muss.",
+    "Ein Vorsprung wie eine Grillzange: rutscht schneller weg, als man denkt.",
+    "{f} vorn, {v} direkt dahinter. Das riecht nach Entscheidung. Und nach Bratwurst.",
+    "{d} Punkte Unterschied. Das ist im Garten die Länge eines Gartenschlauchs. Also nichts.",
+    "{f} führt knapp. Wer jetzt gähnt, verpasst die Wende.",
+    "So dicht beieinander waren {f} und {v} zuletzt an der Grundstücksgrenze.",
+    "Ein Wimpernschlag trennt die Teams. Und vermutlich eine strittige Regelauslegung."
+  ],
+
+  "deutlich": [
+    "{f} zieht davon. {v} sucht noch den Anschluss und den zweiten Schuh.",
+    "{f} baut aus. Bei {v} wird bereits die Taktik überdacht.",
+    "{v} braucht jetzt einen Plan. Oder wenigstens ein kaltes Getränk.",
+    "{f} liegt vorn wie die Hecke von Nummer 8: ein ganzes Stück zu weit.",
+    "Bei {v} steht die Frage im Raum, ob man das Aufwärmen ernst genug genommen hat.",
+    "{f} macht das souverän. Verdächtig souverän.",
+    "{v} liegt zurück, aber die Schluss-Staffel bringt doppelte Punkte. Kopf hoch.",
+    "{f} führt komfortabel. So komfortabel wie ein Gartenstuhl mit Kissen.",
+    "{d} Punkte Vorsprung für {f}. Es riecht nach Grill und nach Vorentscheidung.",
+    "{v} müsste jetzt so etwas wie Ehrgeiz entwickeln. Das gab es hier lange nicht.",
+    "{f} hat einen Lauf. {v} hat einen Plan B. Hoffentlich.",
+    "Der Abstand wächst. Genau wie der Rasen, den hier keiner mäht."
+  ],
+
+  "klar": [
+    "{f} spielt in einer eigenen Liga. {v} spielt eher mit dem Gedanken, Kuchen zu holen.",
+    "Das ist keine Führung mehr, das ist eine Entfernung.",
+    "{v} bräuchte jetzt ein Wunder. Oder eine sehr großzügige Regelauslegung.",
+    "{f} dominiert. Der Rasen ist beeindruckt, die Nachbarschaft ebenfalls.",
+    "Zwischen {f} und {v} liegen Welten. Und zwei Grundstücksgrenzen.",
+    "{v} kann sich ab jetzt voll auf das Buffet konzentrieren.",
+    "{d} Punkte Vorsprung. Das ist mehr, als manche Hecke hoch ist.",
+    "Ich habe den Stand dreimal nachgerechnet. Er stimmt leider immer noch.",
+    "{v} hat die Aufholjagd offiziell auf die nächste Olympiade verschoben.",
+    "{f} ist heute nicht zu halten. Nicht mal von der Gartenpforte.",
+    "{f} führt so klar, dass ich mir überlege, ob ich noch kommentieren muss.",
+    "Bei {v} wird bereits diskutiert, ob die Punktevergabe unabhängig geprüft wurde."
+  ],
+
+  "endspurt": [
+    "Die Schlussphase läuft. Jetzt trennt sich das Gemüse vom Beet.",
+    "Nur noch wenige Spiele. Wer jetzt patzt, hört es beim nächsten Grillfest wieder.",
+    "Endspurt! {f} vorn, aber {v} hat noch alle Chancen.",
+    "Es geht in die heiße Phase. Genau wie die Bratwürste.",
+    "Gleich fällt die Entscheidung. Die Urkunden liegen schon bereit.",
+    "{d} Punkte Unterschied und kaum noch Spiele. Das wird eng bis zum Schluss.",
+    "Die letzten Disziplinen. Jetzt zeigt sich, wer sich vorher zu viel Kartoffelsalat genommen hat.",
+    "Schlussphase. {v} hat noch alles in der Hand, außer der Führung."
+  ],
+
+  "ende": [
+    "Damit ist es amtlich: {f} gewinnt die Nachbarschafts-Olympiade! Der Rasen wird nie wieder derselbe sein.",
+    "{f} holt sich den Sieg. {v} holt sich noch ein Stück Kuchen.",
+    "Sieg für {f}! Die Straße hat einen neuen Titelträger und ein paar neue Grasflecken.",
+    "{f} triumphiert mit {d} Punkten Vorsprung. Ein Tag, der in die Straßengeschichte eingeht.",
+    "Es ist geschafft: {f} gewinnt. Der Wanderpokal wandert.",
+    "{f} steht ganz oben. {v} hat trotzdem gewonnen: neue Freunde und ordentlich Muskelkater.",
+    "Schlusspfiff. {f} ist Olympiasieger dieser Nachbarschaft. Bis nächstes Jahr.",
+    "{f} macht den Sack zu. Und danach hoffentlich auch die Getränkekiste."
+  ],
+
+  "endeGleich": [
+    "Unentschieden! Alle Spiele durch, kein Sieger. Das ist wahre Nachbarschaft.",
+    "Punktgleich am Ende. Beide Teams gewinnen und keiner muss aufräumen. Halt, doch.",
+    "Ein Remis für die Ewigkeit. Oder bis zum nächsten Jahr.",
+    "Gleichstand nach allen Disziplinen. Das schafft man nicht mal, wenn man es versucht."
+  ],
+
+  "ananas": [
+    "Die Goldene Ananas des Tages geht an {name}. Für herausragende Leistungen abseits jeder Wertung.",
+    "{name} erhält die Goldene Ananas. Begründung: einfach so.",
+    "Sonderpreis der Jury an {name}. Die Goldene Ananas für Haltung unter schwierigen Bedingungen.",
+    "Die Goldene Ananas geht heute an {name}. Herzlichen Glückwunsch, es gibt nichts zu gewinnen.",
+    "{name} wird mit der Goldenen Ananas geehrt. Der Pokal ist leider aus Obst."
+  ]
+}

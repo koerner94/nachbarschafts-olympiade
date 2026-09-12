@@ -36,13 +36,44 @@ daten/konfig.json     Titel, Datum, Teamnamen, PIN, GitHub-Adresse
 daten/teilnehmer.json alle Mitspieler + Team nach der Auslosung
 daten/spiele.json     alle Disziplinen mit Regeln und Punkten
 daten/ergebnisse.json wird von der App geschrieben
+daten/spruecke.json    die Sprüche des Kommentators
 ```
 
-## Nachzügler
+## Leute hinzufügen, entfernen, neu auslosen
 
-Kommt jemand erst später dazu, gibt es unter „Teams" den Knopf **„Nachzügler zulosen".**
-Die Person landet im kleineren Team, bei Gleichstand entscheidet das Los. Die eigentliche
-Auslosung bleibt dabei unangetastet.
+Alles unter „Teams", wenn du mit der PIN freigeschaltet bist:
+
+* **➕ Person hinzufügen** – vor der Auslosung kommt sie nur auf die Liste, danach wird
+  sie dem kleineren Team zugelost (bei Gleichstand entscheidet das Los).
+* **✕ neben einem Namen** – Person entfernen, wenn jemand absagt.
+* **🎲 Alles neu auslosen** – wirft die bisherige Einteilung weg und zieht komplett neu.
+  Alle Handys zeigen danach die neue Einteilung.
+
+## Kalle vom Balkon, der Kommentator
+
+Oben auf der Stand-Seite sitzt ein Kommentator und kommentiert den Spielstand. Er merkt
+sich, welchen Spruch er auf diesem Handy schon gebracht hat, und **wiederholt keinen**,
+solange noch ungenutzte übrig sind. Ein neuer Spruch kommt automatisch, sobald sich der
+Punktestand ändert – oder sofort über den Knopf 🔁.
+
+Seine Sprüche stehen in `daten/spruecke.json`, sortiert nach Spielsituation
+(`start`, `gleich`, `knapp`, `deutlich`, `klar`, `endspurt`, `ende`, `endeGleich`).
+Eigene Insider-Witze einfach in die passende Liste eintragen – `{f}` ist das führende
+Team, `{v}` das verfolgende, `{d}` der Punkteabstand.
+
+## Die Spielereien
+
+* **Die Fackel** oben links brennt erst, wenn das erste Spiel entschieden ist.
+* **Konfetti und Fanfare** bei jedem Ergebnis, bei der Auslosung und am Ende.
+  Ton lässt sich mit dem Lautsprecher-Knopf oben abschalten.
+* **Siegerpodest und Medaillenspiegel** auf der Stand-Seite.
+* **Goldene Ananas**: fünfmal auf die Fackel tippen. Mehr wird hier nicht verraten.
+
+## Zum Design
+
+Bewusst **ohne** die olympischen Ringe und ohne offizielles Emblem – die sind geschützt.
+Verwendet werden nur allgemeine Wettkampf-Motive: Fackel, Lorbeer, Siegerpodest,
+Medaillen. Für ein privates Nachbarschaftsfest ist das unproblematisch.
 
 ## Die Auslosung
 

@@ -4,7 +4,7 @@
    schreibt Aenderungen direkt in das Projekt zurueck – alle anderen sehen sie
    beim naechsten Aktualisieren. */
 
-const DATEIEN = ['konfig.json', 'teilnehmer.json', 'spiele.json', 'ergebnisse.json'];
+const DATEIEN = ['konfig.json', 'teilnehmer.json', 'spiele.json', 'ergebnisse.json', 'spruecke.json'];
 const SPEICHER = 'olympiade.';
 
 /* Zwei Links auf dieselbe App:
@@ -18,6 +18,7 @@ const zustand = {
   teilnehmer: null,
   spiele: null,
   ergebnisse: null,
+  spruecke: null,
   ansicht: 'rangliste',
   offenesSpiel: null,
   admin: DARF_EINTRAGEN && localStorage.getItem(SPEICHER + 'admin') === '1',
@@ -102,7 +103,7 @@ async function ladeAlles(still = false) {
       zustand.konfig = await r.json();
     }
     const geladen = await Promise.all(DATEIEN.map(holeDatei));
-    const schluessel = { 'konfig.json': 'konfig', 'teilnehmer.json': 'teilnehmer', 'spiele.json': 'spiele', 'ergebnisse.json': 'ergebnisse' };
+    const schluessel = { 'konfig.json': 'konfig', 'teilnehmer.json': 'teilnehmer', 'spiele.json': 'spiele', 'ergebnisse.json': 'ergebnisse', 'spruecke.json': 'spruecke' };
     DATEIEN.forEach((datei, i) => {
       /* Eigene, noch nicht gespeicherte Eingaben duerfen nicht ueberschrieben werden. */
       if (!zustand.dreckig[datei]) zustand[schluessel[datei]] = geladen[i];
@@ -110,15 +111,15 @@ async function ladeAlles(still = false) {
     zustand.offline = false;
     zustand.zuletzt = new Date();
     localStorage.setItem(SPEICHER + 'cache', JSON.stringify({
-      konfig: zustand.konfig, teilnehmer: zustand.teilnehmer,
-      spiele: zustand.spiele, ergebnisse: zustand.ergebnisse, zeit: Date.now()
+      konfig: zustand.konfig, teilnehmer: zustand.teilnehmer, spiele: zustand.spiele,
+      ergebnisse: zustand.ergebnisse, spruecke: zustand.spruecke, zeit: Date.now()
     }));
   } catch (e) {
     zustand.offline = true;
     const cache = localStorage.getItem(SPEICHER + 'cache');
     if (cache && !zustand.spiele) {
       const c = JSON.parse(cache);
-      Object.assign(zustand, { konfig: c.konfig, teilnehmer: c.teilnehmer, spiele: c.spiele, ergebnisse: c.ergebnisse });
+      Object.assign(zustand, { konfig: c.konfig, teilnehmer: c.teilnehmer, spiele: c.spiele, ergebnisse: c.ergebnisse, spruecke: c.spruecke });
       zustand.zuletzt = new Date(c.zeit);
     }
     if (!still) toast('Keine Verbindung – zeige den letzten Stand');
@@ -208,6 +209,145 @@ async function speichereErgebnisse() {
   return ok;
 }
 
+/* ================= Show: Kommentator, Konfetti, Fanfare ================= */
+
+/* Wie steht das Spiel gerade? Daraus waehlt der Kommentator seine Schublade. */
+function situation() {
+  const { punkte, fertig } = punktestand();
+  const offen = aktiveSpiele().length - fertig.length;
+  const d = Math.abs(punkte.a - punkte.b);
+  const f = punkte.a > punkte.b ? 'a' : 'b';
+  const v = f === 'a' ? 'b' : 'a';
+  if (!fertig.length) return { kat: 'start', d: 0 };
+  if (!offen) return d === 0 ? { kat: 'endeGleich', d } : { kat: 'ende', f, v, d };
+  if (d === 0) return { kat: 'gleich', d };
+  if (offen <= 3 && d <= 20) return { kat: 'endspurt', f, v, d };
+  if (d <= 10) return { kat: 'knapp', f, v, d };
+  if (d <= 25) return { kat: 'deutlich', f, v, d };
+  return { kat: 'klar', f, v, d };
+}
+
+/* Zieht einen Spruch, der auf diesem Handy noch nicht dran war.
+   Erst wenn die ganze Schublade durch ist, faengt sie von vorne an. */
+function spruchZiehen(kategorie) {
+  const pool = zustand.spruecke?.[kategorie] || [];
+  if (!pool.length) return '';
+  const schluessel = SPEICHER + 'benutzt.' + kategorie;
+  let benutzt = [];
+  try { benutzt = JSON.parse(localStorage.getItem(schluessel) || '[]'); } catch (e) { benutzt = []; }
+  let frei = pool.map((_, i) => i).filter((i) => !benutzt.includes(i));
+  if (!frei.length) { benutzt = []; frei = pool.map((_, i) => i); }
+  const gewaehlt = frei[Math.floor(Math.random() * frei.length)];
+  benutzt.push(gewaehlt);
+  try { localStorage.setItem(schluessel, JSON.stringify(benutzt)); } catch (e) { /* egal */ }
+  return pool[gewaehlt];
+}
+
+function spruchFuellen(text, lage) {
+  return text
+    .replace(/\{f\}/g, lage.f ? team(lage.f).name : '')
+    .replace(/\{v\}/g, lage.v ? team(lage.v).name : '')
+    .replace(/\{d\}/g, lage.d % 1 ? lage.d.toFixed(1) : lage.d);
+}
+
+/* Ein neuer Spruch kommt nur, wenn sich am Spielstand etwas geaendert hat –
+   sonst wuerde bei jedem Aktualisieren ein anderer erscheinen. */
+function aktuellerSpruch(erzwingen = false) {
+  const lage = situation();
+  const { punkte } = punktestand();
+  const schluessel = lage.kat + ':' + punkte.a + ':' + punkte.b;
+  let gemerkt = null;
+  try { gemerkt = JSON.parse(localStorage.getItem(SPEICHER + 'spruch') || 'null'); } catch (e) { /* egal */ }
+  if (!erzwingen && gemerkt && gemerkt.schluessel === schluessel && gemerkt.text) return gemerkt.text;
+  const text = spruchFuellen(spruchZiehen(lage.kat), lage);
+  try { localStorage.setItem(SPEICHER + 'spruch', JSON.stringify({ schluessel, text })); } catch (e) { /* egal */ }
+  return text;
+}
+
+function kommentarKarte(erzwingen = false) {
+  const text = aktuellerSpruch(erzwingen);
+  if (!text) return '';
+  const wer = zustand.spruecke?.kommentator || 'Der Kommentator';
+  return `<div class="kommentar nicht-drucken">
+      <span class="mikro">🎤</span>
+      <div>
+        <div class="wer">${esc(wer)} · am Mikrofon</div>
+        <div class="text" id="spruch-text">${esc(text)}</div>
+      </div>
+      <button class="nochmal" id="knopf-spruch" title="Noch einen Spruch">🔁</button>
+    </div>`;
+}
+
+/* Konfetti – klein selbst gebaut, damit die App ohne fremde Bibliothek auskommt. */
+function konfetti(dauer = 2600) {
+  const c = $('#konfetti');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  c.width = window.innerWidth;
+  c.height = window.innerHeight;
+  const farben = ['#c9a227', '#e8c96a', '#ffffff', ...(zustand.konfig?.teams || []).map((t) => t.farbe)];
+  const teile = Array.from({ length: 120 }, () => ({
+    x: Math.random() * c.width,
+    y: -20 - Math.random() * c.height,
+    b: 5 + Math.random() * 7,
+    vy: 2.2 + Math.random() * 3.4,
+    vx: -1.1 + Math.random() * 2.2,
+    dreh: Math.random() * Math.PI,
+    dv: -0.12 + Math.random() * 0.24,
+    f: farben[Math.floor(Math.random() * farben.length)]
+  }));
+  const ende = Date.now() + dauer;
+  (function schritt() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    for (const t of teile) {
+      t.y += t.vy; t.x += t.vx; t.dreh += t.dv;
+      if (t.y > c.height + 20) { t.y = -20; t.x = Math.random() * c.width; }
+      ctx.save();
+      ctx.translate(t.x, t.y);
+      ctx.rotate(t.dreh);
+      ctx.fillStyle = t.f;
+      ctx.fillRect(-t.b / 2, -t.b / 2, t.b, t.b * 0.55);
+      ctx.restore();
+    }
+    if (Date.now() < ende) requestAnimationFrame(schritt);
+    else ctx.clearRect(0, 0, c.width, c.height);
+  })();
+}
+
+function stumm() { return localStorage.getItem(SPEICHER + 'stumm') === '1'; }
+
+/* Kleine Fanfare, komplett im Browser erzeugt – keine Tondatei noetig. */
+function fanfare(art = 'sieg') {
+  if (stumm()) return;
+  try {
+    const Ac = window.AudioContext || window.webkitAudioContext;
+    if (!Ac) return;
+    const ac = new Ac();
+    const noten = art === 'sieg' ? [523.25, 659.25, 783.99, 1046.5] : [659.25, 783.99];
+    noten.forEach((hz, i) => {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = 'triangle';
+      o.frequency.value = hz;
+      const t = ac.currentTime + i * 0.13;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.2, t + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.42);
+      o.connect(g); g.connect(ac.destination);
+      o.start(t); o.stop(t + 0.45);
+    });
+    setTimeout(() => ac.close(), 1600);
+  } catch (e) { /* Ton ist Beiwerk, nie ein Grund fuer einen Fehler */ }
+}
+
+/* Das Feuer brennt, sobald das erste Spiel entschieden ist. */
+function fackelPflegen() {
+  const f = $('#fackel');
+  if (!f) return;
+  const brennt = punktestand().fertig.length > 0;
+  f.classList.toggle('aus', !brennt);
+  f.title = brennt ? 'Das Feuer brennt – die Spiele laufen' : 'Noch kein Spiel entschieden';
+}
+
 /* ================= Punkte rechnen ================= */
 
 function aktiveSpiele() {
@@ -280,10 +420,21 @@ function zeichne() {
     urkunden: ansichtUrkunden
   }[zustand.ansicht] || ansichtRangliste)();
   window.scrollTo(0, 0);
+  fackelPflegen();
+  tonKnopfPflegen();
   bindeEreignisse();
 }
 
 /* ---- Stand ---- */
+function medaillenspiegel() {
+  const m = { a: { gold: 0, silber: 0, geteilt: 0 }, b: { gold: 0, silber: 0, geteilt: 0 } };
+  for (const { ergebnis } of punktestand().fertig) {
+    if (ergebnis.sieger === 'unentschieden') { m.a.geteilt++; m.b.geteilt++; }
+    else { m[ergebnis.sieger].gold++; m[ergebnis.sieger === 'a' ? 'b' : 'a'].silber++; }
+  }
+  return m;
+}
+
 function ansichtRangliste() {
   const { punkte, fertig } = punktestand();
   const alle = aktiveSpiele();
@@ -291,23 +442,51 @@ function ansichtRangliste() {
   const summe = punkte.a + punkte.b || 1;
   const fuehrt = punkte.a === punkte.b ? '' : (punkte.a > punkte.b ? 'a' : 'b');
   const offen = alle.length - fertig.length;
+  const zahlText = (n) => (n % 1 ? n.toFixed(1) : String(n));
 
   const karte = (t) => `
     <div class="stand-team ${fuehrt === t.id ? 'fuehrt' : ''}" style="background:${t.farbe}">
       <span class="emoji">${t.emoji || '●'}</span>
       <div class="name">${esc(t.name)}</div>
-      <div class="punkte">${(punkte[t.id] % 1 ? punkte[t.id].toFixed(1) : punkte[t.id])}</div>
+      <div class="punkte">${zahlText(punkte[t.id])}</div>
       <div class="zusatz">Punkte</div>
     </div>`;
 
+  /* Siegerpodest: das fuehrende Team steht oben. */
+  const sortiert = [A, B].slice().sort((x, y) => punkte[y.id] - punkte[x.id]);
+  const gleichauf = punkte.a === punkte.b;
+  const podest = fertig.length ? `
+    <h2 class="abschnitt">Siegerpodest</h2>
+    <div class="karte">
+      <div class="podest">
+        ${sortiert.map((t, i) => `
+          <div class="platz ${gleichauf || i === 0 ? 'eins' : 'zwei'}" style="background:${t.farbe}">
+            <span class="medaille">${gleichauf ? '🤝' : (i === 0 ? '🥇' : '🥈')}</span>
+            <span class="pname">${esc(t.name)}</span>
+            <span class="ppunkte">${zahlText(punkte[t.id])}</span>
+          </div>`).join('')}
+      </div>
+    </div>` : '';
+
+  const m = medaillenspiegel();
+  const spiegel = fertig.length ? `
+    <h2 class="abschnitt">Medaillenspiegel</h2>
+    <div class="karte">
+      <div class="spiegel-kopf"><span>Team</span><span>🥇</span><span>🥈</span><span>🤝</span></div>
+      ${[A, B].map((t) => `<div class="spiegel-zeile">
+        <span class="tname">${t.emoji} ${esc(t.name)}</span>
+        <span>${m[t.id].gold}</span><span>${m[t.id].silber}</span><span>${m[t.id].geteilt}</span>
+      </div>`).join('')}
+    </div>` : '';
+
   const letzte = fertig.slice().reverse().slice(0, 30).map(({ spiel, ergebnis }) => {
-    const s = ergebnis.sieger;
-    const gewinner = s === 'unentschieden' ? 'Unentschieden' : team(s).name;
-    const farbe = s === 'unentschieden' ? '#888' : team(s).farbe;
+    const sg = ergebnis.sieger;
+    const gewinner = sg === 'unentschieden' ? 'Unentschieden' : team(sg).name;
+    const farbe = sg === 'unentschieden' ? '#7b8794' : team(sg).farbe;
     return `<div class="zeile">
       <div class="haupt">
-        <div class="titel">${esc(spiel.name)}</div>
-        <div class="unter">${spiel.typ === 'sieger' ? '' :
+        <div class="titel">${sg === 'unentschieden' ? '🤝' : '🥇'} ${esc(spiel.name)}</div>
+        <div class="unter">${spiel.typ === 'sieger' ? esc(spiel.reihe) :
           esc(team('a').name) + ': ' + wertText(spiel, ergebnis.a) + ' · ' + esc(team('b').name) + ': ' + wertText(spiel, ergebnis.b)}</div>
       </div>
       <span class="punkt-pille" style="background:${farbe}">${esc(gewinner)}</span>
@@ -315,15 +494,18 @@ function ansichtRangliste() {
   }).join('');
 
   return `
+    ${kommentarKarte()}
     <div class="stand-gross">${karte(A)}${karte(B)}</div>
     <div class="balken">
       <div style="width:${(punkte.a / summe) * 100}%;background:${A.farbe}"></div>
       <div style="width:${(punkte.b / summe) * 100}%;background:${B.farbe}"></div>
     </div>
     <p class="fortschritt">${fertig.length} von ${alle.length} Spielen entschieden${offen ? ` · noch ${offen} offen` : ' · alles durch! 🎉'}</p>
-    ${!zustand.teilnehmer?.ausgelost ? '<div class="hinweis">Die Teams sind noch nicht ausgelost. Das geht einmalig unter <b>Teams</b>.</div>' : ''}
+    ${!zustand.teilnehmer?.ausgelost ? '<div class="hinweis">Die Teams sind noch nicht ausgelost. Das geht unter <b>Teams</b>.</div>' : ''}
+    ${podest}
+    ${spiegel}
     <h2 class="abschnitt">Entschiedene Spiele</h2>
-    <div class="karte">${letzte || '<p style="color:var(--leise);margin:4px 0">Noch kein Ergebnis eingetragen.</p>'}</div>`;
+    <div class="karte">${letzte || '<p style="color:var(--leise);margin:4px 0">Noch kein Ergebnis eingetragen. Das Feuer wartet.</p>'}</div>`;
 }
 
 /* ---- Spiele ---- */
@@ -351,30 +533,78 @@ function ansichtSpiele() {
 }
 
 /* ---- Teams ---- */
+function personZeile(pp) {
+  const weg = zustand.admin
+    ? `<button class="weg-knopf nicht-drucken" data-weg="${esc(pp.name)}" title="Entfernen">✕</button>` : '';
+  const unter = [pp.haushalt, pp.kind ? 'Kind' : ''].filter(Boolean).join(' · ');
+  return `<div class="zeile">
+    <div class="haupt"><div class="titel">${esc(pp.name)}</div>
+    ${unter ? `<div class="unter">${esc(unter)}</div>` : ''}</div>${weg}</div>`;
+}
+
 function ansichtTeams() {
   const t = zustand.teilnehmer;
   if (!t) return '<p class="laden">…</p>';
+
   if (!t.ausgelost) {
-    const namen = t.personen.map((p) => `<div class="zeile"><div class="haupt"><div class="titel">${esc(p.name)}</div>${p.haushalt ? `<div class="unter">${esc(p.haushalt)}</div>` : ''}</div></div>`).join('');
     return `
-      <div class="hinweis">Die Auslosung läuft <b>ein einziges Mal</b>. Danach steht die Zuordnung fest und ist auf jedem Handy gleich.</div>
+      <div class="hinweis">Die Auslosung wird <b>einmal</b> gestartet. Danach steht die Zuordnung
+        für alle Handys fest – ändern lässt sie sich trotzdem jederzeit wieder.</div>
       <h2 class="abschnitt">${t.personen.length} Mitspieler</h2>
-      <div class="karte">${namen || 'Noch keine Namen eingetragen.'}</div>
-      ${zustand.admin
-        ? '<button class="knopf" id="knopf-losen">🎲 Auslosung jetzt starten</button>'
+      <div class="karte">${t.personen.map(personZeile).join('') || 'Noch keine Namen eingetragen.'}</div>
+      ${zustand.admin ? `
+        <button class="knopf gold" id="knopf-losen">🔥 Auslosung starten</button>
+        <button class="knopf grau" id="knopf-person">➕ Person hinzufügen</button>`
         : '<div class="karte" style="text-align:center;color:var(--leise)">Die Auslosung startet der Veranstalter.</div>'}`;
   }
-  let html = `<p class="fortschritt">Ausgelost am ${esc(t.ausgelost_am || '')}</p>`;
+
+  let html = `<p class="fortschritt">🔥 Ausgelost am ${esc(t.ausgelost_am || '')}</p>`;
   for (const tm of zustand.konfig.teams) {
-    const leute = t.personen.filter((p) => p.team === tm.id);
+    const leute = t.personen.filter((pp) => pp.team === tm.id);
     html += `<h2 class="abschnitt" style="color:${tm.farbe}">${tm.emoji} ${esc(tm.name)} · ${leute.length} Leute</h2>
-      <div class="karte">${leute.map((p) => `<div class="zeile"><div class="haupt"><div class="titel">${esc(p.name)}</div>${p.haushalt ? `<div class="unter">${esc(p.haushalt)}${p.kind ? ' · Kind' : ''}</div>` : (p.kind ? '<div class="unter">Kind</div>' : '')}</div></div>`).join('') || 'Niemand zugeteilt'}</div>`;
+      <div class="karte">${leute.map(personZeile).join('') || 'Niemand zugeteilt'}</div>`;
+  }
+  const ohne = t.personen.filter((pp) => !pp.team);
+  if (ohne.length) {
+    html += `<h2 class="abschnitt">Noch ohne Team</h2><div class="karte">${ohne.map(personZeile).join('')}</div>`;
   }
   if (zustand.admin) {
-    html += '<button class="knopf nicht-drucken" id="knopf-nachzuegler">➕ Nachzügler zulosen</button>';
-    html += '<button class="knopf grau nicht-drucken" id="knopf-neulosen" style="margin-top:8px">Auslosung zurücksetzen und neu ziehen</button>';
+    html += `
+      <button class="knopf" id="knopf-person">➕ Person hinzufügen</button>
+      <button class="knopf grau" id="knopf-neulosen">🎲 Alles neu auslosen</button>`;
   }
   return html;
+}
+
+/* Nimmt jemanden auf. Vor der Auslosung landet die Person nur auf der Liste,
+   danach kommt sie ins kleinere Team – bei Gleichstand entscheidet das Los. */
+async function personHinzufuegen(name, haushalt, kind) {
+  const liste = zustand.teilnehmer.personen;
+  if (liste.some((x) => x.name.toLowerCase() === name.toLowerCase())) {
+    toast(name + ' ist schon dabei');
+    return;
+  }
+  let ziel = '';
+  if (zustand.teilnehmer.ausgelost) {
+    const anzahl = {
+      a: liste.filter((x) => x.team === 'a').length,
+      b: liste.filter((x) => x.team === 'b').length
+    };
+    ziel = anzahl.a === anzahl.b ? (Math.random() < 0.5 ? 'a' : 'b') : (anzahl.a < anzahl.b ? 'a' : 'b');
+  }
+  liste.push({ name, haushalt: haushalt || '', kind: !!kind, team: ziel });
+  await speichere('teilnehmer.json', zustand.teilnehmer, 'Mitspieler ' + name + ' aufgenommen');
+  if (ziel) { toast(name + ' → ' + team(ziel).name); konfetti(1500); fanfare('kurz'); }
+  else toast(name + ' steht auf der Liste');
+  zeichne();
+}
+
+async function personEntfernen(name) {
+  zustand.teilnehmer.personen = zustand.teilnehmer.personen.filter((x) => x.name !== name);
+  if (zustand.ergebnisse?.auszeichnungen) delete zustand.ergebnisse.auszeichnungen[name];
+  await speichere('teilnehmer.json', zustand.teilnehmer, 'Mitspieler ' + name + ' entfernt');
+  toast(name + ' ist raus');
+  zeichne();
 }
 
 /* ---- Eintragen ---- */
@@ -543,7 +773,8 @@ async function starteAuslosung() {
   if (!personen.length) { toast('Es sind noch keine Namen eingetragen'); return; }
   const gezogen = loseAus(personen);
 
-  dialogZeigen('🎲 Die Auslosung läuft …', '<div id="los-buehne"></div>', null, 'Fertig');
+  dialogZeigen('🔥 Eröffnungszeremonie', '<div id="los-buehne"></div>', null, 'Fertig');
+  fanfare('kurz');
   $('#dialog-ok').disabled = true;
   $('#dialog-abbrechen').hidden = true;
   const buehne = $('#los-buehne');
@@ -560,6 +791,8 @@ async function starteAuslosung() {
   }
   $('#dialog-ok').disabled = false;
 
+  konfetti(3400);
+  fanfare('sieg');
   zustand.teilnehmer.personen = gezogen;
   zustand.teilnehmer.ausgelost = true;
   zustand.teilnehmer.ausgelost_am = jetzt();
@@ -586,11 +819,13 @@ function uhrUmschalten() {
     u.laeuft = false;
     clearInterval(u.ticker);
     $('#uhr-start').textContent = 'Weiter';
+    $('#uhr-anzeige')?.classList.remove('laeuft');
   } else {
     u.start = Date.now();
     u.laeuft = true;
     u.ticker = setInterval(uhrZeichne, 100);
     $('#uhr-start').textContent = 'Stopp';
+    $('#uhr-anzeige')?.classList.add('laeuft');
   }
   uhrZeichne();
 }
@@ -674,22 +909,32 @@ function bindeEreignisse() {
       () => { dialogSchliessen(); starteAuslosung(); }, 'Losen!');
   });
 
-  setzen('knopf-nachzuegler', () => {
-    dialogZeigen('Nachzügler zulosen',
-      `<p style="font-size:13.5px;margin-top:0">Wer erst später kommt, wird dem <b>kleineren Team</b> zugeschlagen – bei Gleichstand entscheidet das Los. Die Auslosung von vorhin bleibt unangetastet.</p>
-       <input type="text" id="nachzuegler-feld" placeholder="Vorname">`,
+  setzen('knopf-person', () => {
+    const spaeter = zustand.teilnehmer.ausgelost;
+    dialogZeigen(spaeter ? 'Nachzügler zulosen' : 'Person hinzufügen',
+      `<p style="font-size:13.5px;margin-top:0">${spaeter
+        ? 'Wer später kommt, wird dem <b>kleineren Team</b> zugeschlagen – bei Gleichstand entscheidet das Los. Die Auslosung von vorhin bleibt unangetastet.'
+        : 'Kommt einfach mit auf die Liste. Zugeteilt wird erst bei der Auslosung.'}</p>
+       <label class="feld"><span>Vorname</span><input type="text" id="person-name" placeholder="z. B. Andi"></label>
+       <label class="feld"><span>Haushalt (freiwillig)</span><input type="text" id="person-haushalt" placeholder="z. B. Nr. 12"></label>
+       <label class="haken"><input type="checkbox" id="person-kind"> Ist ein Kind</label>`,
       async () => {
-        const name = $('#nachzuegler-feld')?.value.trim();
+        const name = $('#person-name')?.value.trim();
         if (!name) { toast('Kein Name eingegeben'); return; }
-        const p = zustand.teilnehmer.personen;
-        if (p.some((x) => x.name.toLowerCase() === name.toLowerCase())) { toast(name + ' ist schon dabei'); return; }
-        const anzahl = { a: p.filter((x) => x.team === 'a').length, b: p.filter((x) => x.team === 'b').length };
-        const ziel = anzahl.a === anzahl.b ? (Math.random() < 0.5 ? 'a' : 'b') : (anzahl.a < anzahl.b ? 'a' : 'b');
-        p.push({ name, haushalt: '', kind: false, team: ziel });
-        await speichere('teilnehmer.json', zustand.teilnehmer, 'Nachzügler ' + name);
-        toast(name + ' → ' + team(ziel).name);
-        zeichne();
-      }, 'Zulosen');
+        await personHinzufuegen(name, $('#person-haushalt')?.value.trim(), $('#person-kind')?.checked);
+      }, spaeter ? 'Zulosen' : 'Aufnehmen');
+  });
+
+  document.querySelectorAll('[data-weg]').forEach((el) => el.onclick = () => {
+    const name = el.dataset.weg;
+    dialogZeigen(name + ' entfernen?',
+      '<p style="font-size:14px;margin:0">Die Person verschwindet von der Liste und bekommt keine Urkunde mehr. Die Punkte der Teams bleiben unverändert.</p>',
+      () => personEntfernen(name), 'Entfernen');
+  });
+
+  setzen('knopf-spruch', () => {
+    const el = $('#spruch-text');
+    if (el) el.textContent = aktuellerSpruch(true);
   });
 
   setzen('knopf-neulosen', () => {
@@ -732,6 +977,9 @@ function bindeEreignisse() {
     zustand.offenesSpiel = null;
     uhrZuruecksetzen();
     await speichereErgebnisse();
+    const durch = punktestand().fertig.length === aktiveSpiele().length;
+    konfetti(durch ? 5000 : 1800);
+    fanfare(durch ? 'sieg' : 'kurz');
   });
 
   setzen('knopf-loeschen', async () => {
@@ -765,6 +1013,41 @@ function bindeEreignisse() {
   });
 }
 
+/* ================= Kopfleiste ================= */
+
+function tonKnopfPflegen() {
+  const b = $('#knopf-ton');
+  if (!b) return;
+  b.textContent = stumm() ? '🔇' : '🔊';
+  b.classList.toggle('stumm', stumm());
+}
+
+$('#knopf-ton').onclick = () => {
+  localStorage.setItem(SPEICHER + 'stumm', stumm() ? '0' : '1');
+  tonKnopfPflegen();
+  toast(stumm() ? 'Ton aus' : 'Ton an');
+  if (!stumm()) fanfare('kurz');
+};
+
+/* Kleines Osterei: fuenfmal auf die Fackel tippen, dann vergibt Kalle
+   die Goldene Ananas an irgendeinen Mitspieler. Ohne jede Bedeutung. */
+let fackelTipps = 0, fackelUhr = null;
+$('#fackel').onclick = () => {
+  fackelTipps++;
+  clearTimeout(fackelUhr);
+  fackelUhr = setTimeout(() => { fackelTipps = 0; }, 2500);
+  if (fackelTipps < 5) return;
+  fackelTipps = 0;
+  const leute = zustand.teilnehmer?.personen || [];
+  if (!leute.length) { toast('Erst braucht es Mitspieler'); return; }
+  const wer = leute[Math.floor(Math.random() * leute.length)].name;
+  const text = (spruchZiehen('ananas') || 'Die Goldene Ananas geht an {name}.').replace(/\{name\}/g, wer);
+  konfetti(2600);
+  fanfare('sieg');
+  dialogZeigen('🍍 Goldene Ananas', `<p style="font-size:15px;margin:0">${esc(text)}</p>`, null, 'Verdient!');
+  $('#dialog-abbrechen').hidden = true;
+};
+
 /* ================= Start ================= */
 
 if (!DARF_EINTRAGEN) {
@@ -785,7 +1068,14 @@ $('#dialog-abbrechen').onclick = dialogSchliessen;
 $('#dialog-ok').onclick = () => { const f = dialogOk; dialogSchliessen(); if (f) f(); };
 $('#dialog').onclick = (e) => { if (e.target.id === 'dialog') dialogSchliessen(); };
 
-ladeAlles();
+ladeAlles().then(() => {
+  const fertig = zustand.spiele ? punktestand().fertig.length : 0;
+  const alle = zustand.spiele ? aktiveSpiele().length : 0;
+  if (alle && fertig === alle && !sessionStorage.getItem(SPEICHER + 'gefeiert')) {
+    sessionStorage.setItem(SPEICHER + 'gefeiert', '1');
+    konfetti(4000);
+  }
+});
 setInterval(async () => {
   if (document.hidden || zustand.offenesSpiel || !$('#dialog').hidden) return;
   await nachsenden();
