@@ -41,53 +41,53 @@ daten/spruecke.json    die Sprüche des Kommentators
 
 ## Zeitplan (Start 15:30, Essen 18:30)
 
-Acht Spiele vor dem Essen (114 Minuten reine Spielzeit), **Wikingerschach als Finale
-danach**. Dazu Begrüßung, Auslosung, Umbau zwischen den Stationen und eine Pause.
+Reihenfolge wie festgelegt. Die Nummer vor jedem Spiel steht auch in der App.
 
-| Uhrzeit | Was |
-|---|---|
-| 15:30 | Ankommen, Begrüßung, **Auslosung in der App** |
-| 15:45 | XXL Jenga (20 min) |
-| 16:10 | Sackwerfen (15 min) |
-| 16:30 | Dosenwerfen (12 min) |
-| 16:45 | Wäschekorb-Basketball (12 min) |
-| 17:00 | Kronkorken-Weitschnippen (8 min) |
-| 17:10 | **Pause**, Getränke, Grill anwerfen |
-| 17:30 | Montagsmaler (20 min) |
-| 17:55 | Limbo (12 min) |
-| 18:10 | Blind schmecken (15 min) – direkt vors Essen, alle sind hungrig |
-| **18:30** | **Essen** |
-| 19:15 | 🔥 **WIKINGERSCHACH – Das Finale** (25 min, **40 Punkte**) |
-| 19:45 | **Siegerehrung, Urkunden, Goldene Ananas** |
+| Uhrzeit | Nr | Was |
+|---|---|---|
+| 15:30 | | Begrüßung, **Auslosung in der App** |
+| 15:45 | 1 | XXL Jenga (20 min) |
+| 16:10 | 2 | Sackwerfen (15 min) – *Toni ist ab ca. 16:00 dabei* |
+| 16:30 | 3 | Blind schmecken (15 min) |
+| 16:50 | 4 | Dosenwerfen (12 min) |
+| 17:05 | 5 | Wäschekorb-Basketball (12 min) |
+| 17:20 | 6 | Kronkorken-Weitschnippen (8 min) |
+| 17:30 | | **Pause**, Getränke, Grill anwerfen |
+| 17:45 | 7 | Montagsmaler (20 min) |
+| 18:08 | 8 | Limbo (12 min) |
+| **18:30** | | **Essen** |
+| 19:15 | 9 | 🔥 **Wikingerschach – das Finale** (25 min, **40 Punkte**) |
+| 19:45 | | **Siegerehrung, Urkunden, Goldene Ananas** |
+
+### Toni
+
+Toni steht ganz normal in der Auslosung und bekommt damit ein zufälliges Team –
+er kommt nur später dazu. In der Teams-Liste steht bei ihm „kommt gegen 16 Uhr".
+Er verpasst damit nur XXL Jenga.
 
 ### Achtung Tageslicht
 
 Ende September geht die Sonne gegen **19:30 Uhr** unter. Wikingerschach im Dunkeln
 funktioniert nicht – man sieht die Klötze nicht mehr. Deshalb steht das Finale hier
-schon um 19:15 und nicht erst um 19:30. Drei Möglichkeiten, falls es eng wird:
-
-1. Essen um 18:15 beginnen, Finale um 19:00.
-2. Baustrahler oder Gartenbeleuchtung ans Kubb-Feld stellen.
-3. Essenspause auf 45 Minuten begrenzen und pünktlich anpfeifen.
+schon um 19:15. Falls das Essen länger dauert: Baustrahler ans Kubb-Feld stellen.
 
 ### Punkteverteilung
 
-125 Punkte gibt es insgesamt: **85 vor dem Essen, 40 im Finale.** Das Wikingerschach
-ist damit fast ein Drittel des ganzen Tages wert. Wer vorher mit weniger als 40 Punkten
-hinten liegt, kann den Tag dort noch drehen – und das ist praktisch immer der Fall.
-Nur bei einem Vorsprung von über 40 Punkten steht der Sieger schon vor dem Essen fest.
+125 Punkte insgesamt: **85 vor dem Essen, 40 im Finale.** Das Wikingerschach ist damit
+fast ein Drittel des ganzen Tages wert. Wer vorher mit weniger als 40 Punkten hinten
+liegt, kann den Tag dort noch drehen.
 
-| Spiel | Punkte |
-|---|---|
-| Wikingerschach (Finale) | 40 |
-| XXL Jenga | 15 |
-| Montagsmaler | 15 |
-| Sackwerfen | 10 |
-| Dosenwerfen | 10 |
-| Wäschekorb-Basketball | 10 |
-| Blind schmecken | 10 |
-| Limbo | 10 |
-| Kronkorken-Weitschnippen | 5 |
+| Nr | Spiel | Punkte |
+|---|---|---|
+| 9 | Wikingerschach (Finale) | 40 |
+| 1 | XXL Jenga | 15 |
+| 7 | Montagsmaler | 15 |
+| 2 | Sackwerfen | 10 |
+| 3 | Blind schmecken | 10 |
+| 4 | Dosenwerfen | 10 |
+| 5 | Wäschekorb-Basketball | 10 |
+| 8 | Limbo | 10 |
+| 6 | Kronkorken-Weitschnippen | 5 |
 
 Kalle rechnet mit: Solange der Rückstand kleiner ist als die noch zu holenden Punkte,
 sagt er „hier ist noch alles offen" statt „das ist gelaufen".
@@ -190,10 +190,13 @@ Je Person eine A4-Seite. Ehrentitel („Schnellster Sackhüpfer") vergibst du vo
 
 ---
 
-## Wer das hier ausrichtet
+## Wer was gemacht hat
 
-**André Steinker** · aka **King of Kotelett** 👑
+| Rolle | Wer |
+|---|---|
+| Ausgerichtet von | **Lea Steinker** |
+| App gebaut von | **André Steinker** · aka **King of Kotelett** 👑 |
 
-Steht in `daten/konfig.json` unter `veranstalter` und `beiname` – dort änderbar.
-Erscheint an zwei Stellen: als Fußzeile unter jeder Seite der App und als
-Unterschriftszeile auf jeder Urkunde.
+Steht in `daten/konfig.json` unter `veranstalter`, `entwickler` und `beiname` – dort
+änderbar. Erscheint als Fußzeile unter jeder Seite der App und auf jeder Urkunde:
+Lea auf der Unterschriftszeile, André klein in der Fußzeile.

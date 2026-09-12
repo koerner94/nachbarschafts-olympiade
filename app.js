@@ -445,10 +445,12 @@ function zeichne() {
         Sie sind hier gespeichert, aber die anderen sehen sie noch nicht.
         <button class="knopf klein" id="knopf-nachsenden" style="margin-top:8px">Jetzt senden</button></div>`
     : '';
-  const macher = k.veranstalter
-    ? `<p class="macher nicht-drucken">Ausgerichtet von <b>${esc(k.veranstalter)}</b>${
-        k.beiname ? ` &middot; aka <b>${esc(k.beiname)}</b> 👑` : ''}</p>`
-    : '';
+  const zeilen = [];
+  if (k.veranstalter) zeilen.push(`Ausgerichtet von <b>${esc(k.veranstalter)}</b>`);
+  if (k.entwickler) zeilen.push(`App gebaut von <b>${esc(k.entwickler)}</b>${
+    k.beiname ? ` &middot; aka <b>${esc(k.beiname)}</b> 👑` : ''}`);
+  const macher = zeilen.length
+    ? `<p class="macher nicht-drucken">${zeilen.join('<br>')}</p>` : '';
   const neuesHtml = banner + ({
     rangliste: ansichtRangliste,
     spiele: ansichtSpiele,
@@ -574,7 +576,7 @@ function ansichtSpiele() {
         : '<span class="marke offen">offen</span>';
       html += `<div class="zeile" data-regel="${esc(s.id)}" style="cursor:pointer">
         <div class="haupt">
-          <div class="titel">${esc(s.name)}</div>
+          <div class="titel">${s.nr ? `<span class="nr">${s.nr}</span> ` : ''}${esc(s.name)}</div>
           <div class="unter">${s.punkte} Punkte · ${esc(s.typ === 'sieger' ? 'Sieger zählt' : s.richtung === 'klein' ? 'kleiner ist besser' : 'mehr ist besser')}</div>
         </div>${marke}
       </div>`;
@@ -588,7 +590,7 @@ function ansichtSpiele() {
 function personZeile(pp) {
   const weg = zustand.admin
     ? `<button class="weg-knopf nicht-drucken" data-weg="${esc(pp.name)}" title="Entfernen">✕</button>` : '';
-  const unter = [pp.haushalt, pp.kind ? 'Kind' : ''].filter(Boolean).join(' · ');
+  const unter = [pp.haushalt, pp.kind ? 'Kind' : '', pp.notiz].filter(Boolean).join(' · ');
   return `<div class="zeile">
     <div class="haupt"><div class="titel">${esc(pp.name)}</div>
     ${unter ? `<div class="unter">${esc(unter)}</div>` : ''}</div>${weg}</div>`;
@@ -630,7 +632,7 @@ function ansichtTeams() {
 
 /* Nimmt jemanden auf. Vor der Auslosung landet die Person nur auf der Liste,
    danach kommt sie ins kleinere Team – bei Gleichstand entscheidet das Los. */
-async function personHinzufuegen(name, haushalt, kind) {
+async function personHinzufuegen(name, haushalt, kind, notiz) {
   const liste = zustand.teilnehmer.personen;
   if (liste.some((x) => x.name.toLowerCase() === name.toLowerCase())) {
     toast(name + ' ist schon dabei');
@@ -644,7 +646,7 @@ async function personHinzufuegen(name, haushalt, kind) {
     };
     ziel = anzahl.a === anzahl.b ? (Math.random() < 0.5 ? 'a' : 'b') : (anzahl.a < anzahl.b ? 'a' : 'b');
   }
-  liste.push({ name, haushalt: haushalt || '', kind: !!kind, team: ziel });
+  liste.push({ name, haushalt: haushalt || '', kind: !!kind, notiz: notiz || '', team: ziel });
   await speichere('teilnehmer.json', zustand.teilnehmer, 'Mitspieler ' + name + ' aufgenommen');
   if (ziel) { toast(name + ' → ' + team(ziel).name); konfetti(1500); fanfare('kurz'); }
   else toast(name + ' steht auf der Liste');
@@ -684,7 +686,7 @@ function ansichtEintragen() {
     for (const s of liste) {
       const e = ergebnisVon(s);
       html += `<div class="zeile" data-spiel="${esc(s.id)}" style="cursor:pointer">
-        <div class="haupt"><div class="titel">${esc(s.name)}</div>
+        <div class="haupt"><div class="titel">${s.nr ? `<span class="nr">${s.nr}</span> ` : ''}${esc(s.name)}</div>
         <div class="unter">${e ? (e.sieger === 'unentschieden' ? 'Unentschieden' : esc(team(e.sieger).name) + ' gewinnt') : 'noch offen'}</div></div>
         <span class="marke ${e ? 'fertig' : 'offen'}">${e ? '✓' : '›'}</span>
       </div>`;
@@ -772,11 +774,13 @@ function ansichtUrkunden() {
       ${ehre ? `<div class="u-text u-ehre">Besondere Auszeichnung: <b>${esc(ehre)}</b></div>` : ''}
       <div class="u-linie" aria-hidden="true"><span>🌿</span></div>
       <div class="u-fuss">
-        <span class="u-fuss-links">${esc(k.untertitel || '')}</span>
+        <span class="u-fuss-links">${esc(k.untertitel || '')}
+          ${k.entwickler ? `<em class="u-app">App: ${esc(k.entwickler)}${
+            k.beiname ? ' &middot; ' + esc(k.beiname) + ' 👑' : ''}</em>` : ''}</span>
         <span class="u-sig">
           <span class="u-sig-strich"></span>
-          <b>${esc(k.veranstalter || 'Der Ausrichter')}</b>
-          ${k.beiname ? `<em>aka ${esc(k.beiname)} 👑</em>` : ''}
+          <b>${esc(k.veranstalter || '')}</b>
+          <em>Ausrichtung</em>
         </span>
       </div>
     </div>`;
@@ -978,11 +982,13 @@ function bindeEreignisse() {
         : 'Kommt einfach mit auf die Liste. Zugeteilt wird erst bei der Auslosung.'}</p>
        <label class="feld"><span>Vorname</span><input type="text" id="person-name" placeholder="z. B. Andi"></label>
        <label class="feld"><span>Haushalt (freiwillig)</span><input type="text" id="person-haushalt" placeholder="z. B. Nr. 12"></label>
+       <label class="feld"><span>Notiz (freiwillig)</span><input type="text" id="person-notiz" placeholder="z. B. kommt gegen 16 Uhr"></label>
        <label class="haken"><input type="checkbox" id="person-kind"> Ist ein Kind</label>`,
       async () => {
         const name = $('#person-name')?.value.trim();
         if (!name) { toast('Kein Name eingegeben'); return; }
-        await personHinzufuegen(name, $('#person-haushalt')?.value.trim(), $('#person-kind')?.checked);
+        await personHinzufuegen(name, $('#person-haushalt')?.value.trim(),
+          $('#person-kind')?.checked, $('#person-notiz')?.value.trim());
       }, spaeter ? 'Zulosen' : 'Aufnehmen');
   });
 

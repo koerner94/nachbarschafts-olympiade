@@ -1,10 +1,10 @@
 {
-  "_hinweis": "Alle Disziplinen. 'aktiv': false = wird in der App ausgeblendet. 'typ' steuert die Eingabe: zeit = Stoppuhr (Sekunden), weite = Meter/Zentimeter, anzahl = Stueck/Treffer/Punkte, sieger = nur Team antippen. 'richtung' klein = kleinerer Wert gewinnt. 'dauer' ist die geplante Spielzeit in Minuten, nur zur Planung.",
+  "_hinweis": "Alle Disziplinen in der Reihenfolge, in der sie gespielt werden ('nr'). 'aktiv': false = wird in der App ausgeblendet. 'typ' steuert die Eingabe: zeit = Stoppuhr (Sekunden), weite = Meter/Zentimeter, anzahl = Stueck/Treffer/Punkte, sieger = nur Team antippen. 'richtung' klein = kleinerer Wert gewinnt. 'dauer' ist die geplante Spielzeit in Minuten.",
   "spiele": [
     {
       "id": "jenga",
       "name": "XXL Jenga",
-      "reihe": "Geschick & Köpfchen",
+      "reihe": "Vor dem Essen",
       "typ": "sieger",
       "richtung": "gross",
       "einheit": "",
@@ -12,12 +12,13 @@
       "dauer": 20,
       "material": "XXL-Jenga-Turm, ebener fester Untergrund (kein weicher Rasen!)",
       "regel": "Beide Teams ziehen abwechselnd je einen Stein und legen ihn oben wieder auf. Nur eine Hand, und nur die obersten drei Reihen bleiben unangetastet. Wer den Turm umwirft, verliert die Runde. Zwei Gewinnrunden von drei. Zeitbremse: Wenn es nach 20 Minuten noch 1:1 steht, entscheidet die Runde mit den meisten gezogenen Steinen.",
-      "aktiv": true
+      "aktiv": true,
+      "nr": 1
     },
     {
       "id": "sackwerfen",
       "name": "Sackwerfen",
-      "reihe": "Wurf & Ziel",
+      "reihe": "Vor dem Essen",
       "typ": "anzahl",
       "richtung": "gross",
       "einheit": "Punkte",
@@ -25,77 +26,13 @@
       "dauer": 15,
       "material": "Zielbrett mit Loch oder zwei Wannen, 6 Wurfsäckchen, Maßband",
       "regel": "Jeder wirft drei Säckchen aus sechs Metern. Ins Loch beziehungsweise in die Wanne zählt drei Punkte, auf dem Brett liegen bleiben zählt einen. Gewertet wird die Summe aller Werfer eines Teams.",
-      "aktiv": true
-    },
-    {
-      "id": "dosenwerfen",
-      "name": "Dosenwerfen",
-      "reihe": "Wurf & Ziel",
-      "typ": "anzahl",
-      "richtung": "gross",
-      "einheit": "Dosen",
-      "punkte": 10,
-      "dauer": 12,
-      "material": "10 Blechdosen, 3 Bälle, stabiler Tisch",
-      "regel": "Pyramide aus zehn Dosen, jeder hat drei Bälle. Gezählt wird die Summe aller umgeworfenen Dosen im Team. Nach jedem Werfer wird neu aufgebaut.",
-      "aktiv": true
-    },
-    {
-      "id": "waeschekorb",
-      "name": "Wäschekorb-Basketball",
-      "reihe": "Wurf & Ziel",
-      "typ": "anzahl",
-      "richtung": "gross",
-      "einheit": "Treffer",
-      "punkte": 10,
-      "dauer": 12,
-      "material": "2 Wäschekörbe, Socken zu Bällen gerollt",
-      "regel": "Aus vier Metern in den Korb, jeder drei Versuche. Der Korb darf von einem Mitspieler gehalten, aber nicht bewegt werden. Summe der Treffer je Team.",
-      "aktiv": true
-    },
-    {
-      "id": "kronkorken",
-      "name": "Kronkorken-Weitschnippen",
-      "reihe": "Wurf & Ziel",
-      "typ": "weite",
-      "richtung": "gross",
-      "einheit": "m",
-      "punkte": 5,
-      "dauer": 8,
-      "material": "Kronkorken, Maßband, glatter Untergrund (Terrasse oder Einfahrt)",
-      "regel": "Kronkorken mit einem Finger wegschnippen, jeder einen Versuch. Der beste Schnipper je Team zählt. Das kleine Spiel für zwischendurch.",
-      "aktiv": true
-    },
-    {
-      "id": "montagsmaler",
-      "name": "Montagsmaler",
-      "reihe": "Geschick & Köpfchen",
-      "typ": "anzahl",
-      "richtung": "gross",
-      "einheit": "Begriffe",
-      "punkte": 15,
-      "dauer": 20,
-      "material": "Flipchart oder große Blätter, dicke Stifte, Begriffe auf Zetteln, Stoppuhr",
-      "regel": "Einer malt, sein Team rät. 60 Sekunden je Begriff, keine Buchstaben und keine Zahlen. Jeder aus dem Team muss einmal malen. Gezählt werden die erratenen Begriffe. Tipp: Begriffe aus der Nachbarschaft nehmen, das wird lustiger.",
-      "aktiv": true
-    },
-    {
-      "id": "limbo",
-      "name": "Limbo",
-      "reihe": "Geschick & Köpfchen",
-      "typ": "weite",
-      "richtung": "klein",
-      "einheit": "cm Höhe",
-      "punkte": 10,
-      "dauer": 12,
-      "material": "Besenstiel, zwei Halter, Zollstock, Musik",
-      "regel": "Rückwärts gebeugt unter der Stange durch, nichts außer den Füßen darf den Boden berühren. Die Stange wird Runde für Runde tiefer gelegt. Die niedrigste geschaffte Höhe je Team zählt.",
-      "aktiv": true
+      "aktiv": true,
+      "nr": 2
     },
     {
       "id": "blindschmecken",
       "name": "Blind schmecken",
-      "reihe": "Geschick & Köpfchen",
+      "reihe": "Vor dem Essen",
       "typ": "anzahl",
       "richtung": "gross",
       "einheit": "Punkte",
@@ -103,12 +40,83 @@
       "dauer": 15,
       "material": "8 Kostproben aus Nachbars Küche, Augenbinde, Löffel, Wasser zum Nachspülen",
       "regel": "Augen verbunden, dann raten: Was ist das – und aus welchem Haus kommt es? Ein Punkt fürs Essen, ein Punkt fürs Haus. Allergien und Unverträglichkeiten vorher abfragen!",
-      "aktiv": true
+      "aktiv": true,
+      "nr": 3
+    },
+    {
+      "id": "dosenwerfen",
+      "name": "Dosenwerfen",
+      "reihe": "Vor dem Essen",
+      "typ": "anzahl",
+      "richtung": "gross",
+      "einheit": "Dosen",
+      "punkte": 10,
+      "dauer": 12,
+      "material": "10 Blechdosen, 3 Bälle, stabiler Tisch",
+      "regel": "Pyramide aus zehn Dosen, jeder hat drei Bälle. Gezählt wird die Summe aller umgeworfenen Dosen im Team. Nach jedem Werfer wird neu aufgebaut.",
+      "aktiv": true,
+      "nr": 4
+    },
+    {
+      "id": "waeschekorb",
+      "name": "Wäschekorb-Basketball",
+      "reihe": "Vor dem Essen",
+      "typ": "anzahl",
+      "richtung": "gross",
+      "einheit": "Treffer",
+      "punkte": 10,
+      "dauer": 12,
+      "material": "2 Wäschekörbe, Socken zu Bällen gerollt",
+      "regel": "Aus vier Metern in den Korb, jeder drei Versuche. Der Korb darf von einem Mitspieler gehalten, aber nicht bewegt werden. Summe der Treffer je Team.",
+      "aktiv": true,
+      "nr": 5
+    },
+    {
+      "id": "kronkorken",
+      "name": "Kronkorken-Weitschnippen",
+      "reihe": "Vor dem Essen",
+      "typ": "weite",
+      "richtung": "gross",
+      "einheit": "m",
+      "punkte": 5,
+      "dauer": 8,
+      "material": "Kronkorken, Maßband, glatter Untergrund (Terrasse oder Einfahrt)",
+      "regel": "Kronkorken mit einem Finger wegschnippen, jeder einen Versuch. Der beste Schnipper je Team zählt. Das kleine Spiel für zwischendurch.",
+      "aktiv": true,
+      "nr": 6
+    },
+    {
+      "id": "montagsmaler",
+      "name": "Montagsmaler",
+      "reihe": "Vor dem Essen",
+      "typ": "anzahl",
+      "richtung": "gross",
+      "einheit": "Begriffe",
+      "punkte": 15,
+      "dauer": 20,
+      "material": "Flipchart oder große Blätter, dicke Stifte, Begriffe auf Zetteln, Stoppuhr",
+      "regel": "Einer malt, sein Team rät. 60 Sekunden je Begriff, keine Buchstaben und keine Zahlen. Jeder aus dem Team muss einmal malen. Gezählt werden die erratenen Begriffe. Tipp: Begriffe aus der Nachbarschaft nehmen, das wird lustiger.",
+      "aktiv": true,
+      "nr": 7
+    },
+    {
+      "id": "limbo",
+      "name": "Limbo",
+      "reihe": "Vor dem Essen",
+      "typ": "weite",
+      "richtung": "klein",
+      "einheit": "cm Höhe",
+      "punkte": 10,
+      "dauer": 12,
+      "material": "Besenstiel, zwei Halter, Zollstock, Musik",
+      "regel": "Rückwärts gebeugt unter der Stange durch, nichts außer den Füßen darf den Boden berühren. Die Stange wird Runde für Runde tiefer gelegt. Die niedrigste geschaffte Höhe je Team zählt.",
+      "aktiv": true,
+      "nr": 8
     },
     {
       "id": "wikingerschach",
       "name": "Wikingerschach",
-      "reihe": "Das große Finale",
+      "reihe": "Nach dem Essen – das Finale",
       "typ": "sieger",
       "richtung": "gross",
       "einheit": "",
@@ -116,7 +124,8 @@
       "dauer": 25,
       "material": "Kubb-Set (10 Kubbs, 6 Wurfhölzer, König, 6 Eckstäbe), Rasenfläche etwa 5 x 8 m",
       "regel": "Abwechselnd werfen beide Teams ihre Wurfhölzer, immer von unten und senkrecht – kein Drehen um die eigene Achse. Erst alle Kubbs der Gegenseite umwerfen, ganz zum Schluss den König. Wer den König zu früh trifft, hat sofort verloren. Das Finale nach dem Essen und mit 40 Punkten fast ein Drittel des ganzen Tages – wer vorher weniger als 40 Punkte hinten liegt, kann hier noch gewinnen. Zeitbremse: Nach 25 Minuten ist Schluss, dann gewinnt das Team, bei dem weniger Kubbs stehen.",
-      "aktiv": true
+      "aktiv": true,
+      "nr": 9
     }
   ]
 }
