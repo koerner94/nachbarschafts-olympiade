@@ -8,8 +8,10 @@ Stoppuhr und Urkunden zum Ausdrucken.
 
 | Zweck | Link |
 |---|---|
-| **Nur zuschauen** (für alle Nachbarn) | `https://<benutzer>.github.io/<repo>/` |
-| **Ergebnisse eintragen** (für dich) | `https://<benutzer>.github.io/<repo>/?eintragen` |
+| **Nur zuschauen** (für alle Nachbarn) | https://koerner94.github.io/nachbarschafts-olympiade/ |
+| **Ergebnisse eintragen** (für dich) | https://koerner94.github.io/nachbarschafts-olympiade/?eintragen |
+
+PIN für den Eintrage-Link: **2026** (änderbar in `daten/konfig.json`).
 
 Im Zuschauer-Link gibt es den Reiter „Eintragen" gar nicht erst. Der Eintrage-Link
 fragt zusätzlich nach der PIN aus `daten/konfig.json`.
@@ -35,6 +37,12 @@ daten/teilnehmer.json alle Mitspieler + Team nach der Auslosung
 daten/spiele.json     alle Disziplinen mit Regeln und Punkten
 daten/ergebnisse.json wird von der App geschrieben
 ```
+
+## Nachzügler
+
+Kommt jemand erst später dazu, gibt es unter „Teams" den Knopf **„Nachzügler zulosen".**
+Die Person landet im kleineren Team, bei Gleichstand entscheidet das Los. Die eigentliche
+Auslosung bleibt dabei unangetastet.
 
 ## Die Auslosung
 
