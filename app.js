@@ -218,6 +218,27 @@ async function speichere(datei, objekt, nachricht) {
   }
 }
 
+/* Sagt in Klartext, woran das Speichern haengt. */
+async function schluesselPruefen(token) {
+  const g = zustand.konfig.github;
+  if (!token) return { ok: false, text: 'Es ist kein Schlüssel eingetragen. Ohne ihn bleibt alles auf diesem Handy.' };
+  const kopf = { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' };
+  try {
+    const r = await fetch(`https://api.github.com/repos/${g.besitzer}/${g.repo}`, { headers: kopf, cache: 'no-store' });
+    if (r.status === 401) return { ok: false, text: 'GitHub akzeptiert den Schlüssel nicht. Wahrscheinlich vertippt, unvollständig kopiert oder abgelaufen.' };
+    if (r.status === 403) return { ok: false, text: 'Der Schlüssel darf nicht auf dieses Projekt zugreifen.' };
+    if (r.status === 404) return { ok: false, text: `Das Projekt ${g.besitzer}/${g.repo} wurde nicht gefunden. Der Schlüssel gilt für ein anderes Projekt.` };
+    if (!r.ok) return { ok: false, text: 'Unerwartete Antwort von GitHub (' + r.status + ').' };
+    const j = await r.json();
+    if (j.permissions && !j.permissions.push) {
+      return { ok: false, text: 'Lesen klappt, Schreiben nicht. Dem Schlüssel fehlt das Recht „Contents: Read and write".' };
+    }
+    return { ok: true, text: 'Alles in Ordnung – Speichern funktioniert.' };
+  } catch (e) {
+    return { ok: false, text: 'Keine Verbindung zu GitHub. Internet prüfen.' };
+  }
+}
+
 /* Versucht offene Aenderungen erneut zu senden (laeuft bei jedem Aktualisieren mit). */
 async function nachsenden() {
   if (!zustand.token) return;
@@ -443,9 +464,14 @@ function zeichne() {
   const ziel = $('#inhalt');
   const offen = Object.keys(zustand.dreckig);
   const banner = offen.length
-    ? `<div class="hinweis nicht-drucken"><b>⚠ ${offen.length} Änderung${offen.length > 1 ? 'en' : ''} noch nicht im Netz.</b>
-        Sie sind hier gespeichert, aber die anderen sehen sie noch nicht.
-        <button class="knopf klein" id="knopf-nachsenden" style="margin-top:8px">Jetzt senden</button></div>`
+    ? (zustand.token
+      ? `<div class="hinweis nicht-drucken"><b>⚠ ${offen.length} Änderung${offen.length > 1 ? 'en' : ''} noch nicht im Netz.</b>
+          Sie sind hier gespeichert, aber die anderen sehen sie noch nicht.
+          <button class="knopf klein" id="knopf-nachsenden" style="margin-top:8px">Jetzt senden</button></div>`
+      : `<div class="hinweis nicht-drucken"><b>⚠ Nur auf diesem Handy gespeichert.</b>
+          ${offen.length} Änderung${offen.length > 1 ? 'en sind' : ' ist'} noch nicht bei GitHub – die anderen sehen
+          davon nichts, und beim Löschen der Browserdaten wäre alles weg.
+          <button class="knopf klein" id="knopf-token" style="margin-top:8px">Speichern einrichten</button></div>`)
     : '';
   const zeilen = [];
   if (k.veranstalter) zeilen.push(`Ausgerichtet von <b>${esc(k.veranstalter)}</b>`);
@@ -1009,16 +1035,37 @@ function bindeEreignisse() {
   });
 
   setzen('knopf-token', () => {
-    dialogZeigen('GitHub-Schlüssel',
-      `<p style="font-size:13.5px;margin-top:0">Der Schlüssel (Fine-grained Token mit Schreibrecht „Contents") bleibt nur auf diesem Handy gespeichert. Ohne ihn siehst du Änderungen nur selbst.</p>
-       <input type="password" id="token-feld" placeholder="github_pat_…" value="${esc(zustand.token)}">`,
+    const g = zustand.konfig.github;
+    dialogZeigen('Speichern einrichten',
+      `<p style="font-size:13.5px;margin-top:0">Damit deine Eintragungen bei allen ankommen, braucht die App
+       einen Schlüssel von GitHub. Er bleibt <b>nur auf diesem Handy</b> und wird niemandem gezeigt.</p>
+       <ol style="font-size:13px;padding-left:20px;margin:0 0 12px;line-height:1.6">
+         <li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Diesen Link öffnen</a> (bei GitHub anmelden)</li>
+         <li>Bei <i>Repository access</i>: <b>Only select repositories</b> → <b>${esc(g.repo)}</b></li>
+         <li>Bei <i>Repository permissions</i>: <b>Contents</b> auf <b>Read and write</b></li>
+         <li>Unten <b>Generate token</b>, dann den Schlüssel kopieren</li>
+         <li>Hier einfügen und auf Speichern tippen</li>
+       </ol>
+       <input type="password" id="token-feld" placeholder="github_pat_…" value="${esc(zustand.token)}">
+       <button class="knopf grau klein" id="knopf-pruefen" style="width:100%;margin-top:8px">Verbindung prüfen</button>
+       <p id="pruef-ergebnis" style="font-size:13px;margin:8px 0 0"></p>`,
       () => {
         zustand.token = $('#token-feld').value.trim();
         localStorage.setItem(SPEICHER + 'token', zustand.token);
         zustand.shas = {};
         toast(zustand.token ? 'Schlüssel gespeichert' : 'Schlüssel gelöscht');
-        zeichne();
+        if (zustand.token) nachsenden().then(zeichne);
+        else zeichne();
       }, 'Speichern');
+
+    const pruef = $('#knopf-pruefen');
+    if (pruef) pruef.onclick = async () => {
+      const feld = $('#pruef-ergebnis');
+      feld.textContent = 'Prüfe …';
+      const e = await schluesselPruefen($('#token-feld').value.trim());
+      feld.textContent = (e.ok ? '✅ ' : '⚠️ ') + e.text;
+      feld.style.color = e.ok ? '#2c7a3f' : '#a8492b';
+    };
   });
 
   setzen('knopf-losen', () => {

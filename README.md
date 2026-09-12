@@ -171,16 +171,26 @@ Ohne Netz bleibt der Eintrag auf dem Handy, oben erscheint ein Warnhinweis, und 
 schickt ihn beim nächsten Aktualisieren automatisch nach. Solange etwas offen ist,
 überschreibt das automatische Nachladen die Eingabe nicht.
 
-## GitHub-Schlüssel (nur für dein Handy)
+## GitHub-Schlüssel – ohne ihn speichert nichts
 
-Damit die App schreiben darf, braucht sie einen Fine-grained Token:
+**Das ist der wichtigste Punkt.** Ohne Schlüssel bleiben alle Eintragungen nur auf
+deinem Handy. Die App sagt das jetzt deutlich: oben erscheint ein Warnbalken
+„Nur auf diesem Handy gespeichert" mit dem Knopf **Speichern einrichten**.
 
-1. github.com → Settings → Developer settings → Personal access tokens → Fine-grained
-2. Repository access: nur dieses Projekt
-3. Permissions → Repository permissions → **Contents: Read and write**
-4. Token kopieren, in der App unter „Eintragen" → „GitHub-Schlüssel" einfügen
+So bekommst du den Schlüssel (dauert zwei Minuten):
 
-Der Schlüssel bleibt im Browser dieses einen Handys. Gib ihn niemandem weiter.
+1. https://github.com/settings/personal-access-tokens/new öffnen und anmelden
+2. Bei *Repository access*: **Only select repositories** → `nachbarschafts-olympiade`
+3. Bei *Repository permissions*: **Contents** auf **Read and write**
+4. Unten **Generate token**, den Schlüssel kopieren
+5. In der App auf **Speichern einrichten**, einfügen, **Verbindung prüfen**, **Speichern**
+
+„Verbindung prüfen" sagt in Klartext, was klemmt – falscher Schlüssel, fehlendes
+Schreibrecht oder falsches Projekt. Der Schlüssel bleibt im Browser dieses einen
+Handys und wird nirgendwo sonst gespeichert. Gib ihn niemandem weiter.
+
+Solange noch etwas ungespeichert ist, überschreibt das automatische Nachladen die
+Eingabe nicht – sobald der Schlüssel da ist, wird alles Angesammelte nachgesendet.
 
 ## Spiele anpassen
 
