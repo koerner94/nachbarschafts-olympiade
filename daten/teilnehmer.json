@@ -1,0 +1,55 @@
+{
+  "_hinweis": "Alle Mitspieler. 'team' bleibt leer, bis die Auslosung einmal in der App gestartet wurde. Danach steht 'ausgelost' auf true und die Zuordnung ist fuer alle Handys fest. 'haushalt' ist freiwillig: gleiche Haushalte werden bei der Auslosung moeglichst auf verschiedene Teams verteilt. Wer spaeter dazukommt, wird in der App unter Teams als Nachzuegler zugelost.",
+  "ausgelost": false,
+  "ausgelost_am": null,
+  "personen": [
+    {
+      "name": "Lea",
+      "haushalt": "",
+      "kind": false,
+      "team": ""
+    },
+    {
+      "name": "André",
+      "haushalt": "",
+      "kind": false,
+      "team": ""
+    },
+    {
+      "name": "Tina",
+      "haushalt": "",
+      "kind": false,
+      "team": ""
+    },
+    {
+      "name": "Martina",
+      "haushalt": "",
+      "kind": false,
+      "team": ""
+    },
+    {
+      "name": "Torsten",
+      "haushalt": "",
+      "kind": false,
+      "team": ""
+    },
+    {
+      "name": "Pia",
+      "haushalt": "",
+      "kind": false,
+      "team": ""
+    },
+    {
+      "name": "Toni",
+      "haushalt": "",
+      "kind": false,
+      "team": ""
+    },
+    {
+      "name": "Mara",
+      "haushalt": "",
+      "kind": false,
+      "team": ""
+    }
+  ]
+}

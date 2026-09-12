@@ -1,0 +1,221 @@
+:root {
+  --gruen: #14532d;
+  --gruen-hell: #1c7a44;
+  --grund: #f6f4ee;
+  --karte: #ffffff;
+  --schrift: #1f2421;
+  --leise: #6b7280;
+  --linie: #e2ded4;
+  --gold: #c99a2e;
+  --warn: #b45309;
+  --radius: 14px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --grund: #14171a;
+    --karte: #1e2225;
+    --schrift: #eceae4;
+    --leise: #9aa1a8;
+    --linie: #31373c;
+    --gruen: #1c7a44;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  margin: 0;
+  padding: 0 0 84px;
+  background: var(--grund);
+  color: var(--schrift);
+  font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ---------- Kopf ---------- */
+#kopf {
+  background: var(--gruen);
+  color: #fff;
+  padding: 14px 16px 12px;
+  position: sticky; top: 0; z-index: 20;
+  padding-top: max(14px, env(safe-area-inset-top));
+}
+.kopf-zeile { display: flex; align-items: center; gap: 10px; }
+#kopf h1 { font-size: 19px; margin: 0; flex: 1; font-weight: 700; letter-spacing: .2px; }
+#kopf p { margin: 2px 0 0; font-size: 13px; opacity: .85; }
+.stand-info { font-size: 11.5px !important; opacity: .65 !important; }
+.icon-knopf {
+  background: rgba(255,255,255,.15); border: 0; color: #fff;
+  width: 38px; height: 38px; border-radius: 50%; font-size: 19px; cursor: pointer;
+}
+.icon-knopf:active { background: rgba(255,255,255,.3); }
+.icon-knopf.dreht { animation: dreh .8s linear infinite; }
+@keyframes dreh { to { transform: rotate(360deg); } }
+
+/* ---------- Inhalt ---------- */
+#inhalt { padding: 14px 14px 20px; max-width: 720px; margin: 0 auto; }
+.laden { text-align: center; color: var(--leise); padding: 40px 0; }
+
+h2.abschnitt {
+  font-size: 13px; text-transform: uppercase; letter-spacing: .09em;
+  color: var(--leise); margin: 22px 0 8px; font-weight: 700;
+}
+h2.abschnitt:first-child { margin-top: 4px; }
+
+.karte {
+  background: var(--karte); border: 1px solid var(--linie);
+  border-radius: var(--radius); padding: 14px; margin-bottom: 10px;
+}
+
+/* ---------- Punktestand ---------- */
+.stand-gross { display: flex; gap: 10px; margin-bottom: 6px; }
+.stand-team {
+  flex: 1; border-radius: var(--radius); padding: 16px 12px; color: #fff;
+  text-align: center; position: relative; overflow: hidden;
+}
+.stand-team .emoji { font-size: 26px; display: block; }
+.stand-team .name { font-size: 13.5px; font-weight: 600; opacity: .95; margin-top: 2px;
+  overflow-wrap: anywhere; }
+.stand-team .punkte { font-size: 44px; font-weight: 800; line-height: 1.05; margin-top: 6px;
+  font-variant-numeric: tabular-nums; }
+.stand-team .zusatz { font-size: 12px; opacity: .85; }
+.stand-team.fuehrt::after {
+  content: "🏆"; position: absolute; top: 6px; right: 8px; font-size: 17px;
+}
+
+.balken { display: flex; height: 10px; border-radius: 6px; overflow: hidden; margin: 8px 0 4px; background: var(--linie); }
+.balken div { transition: width .5s ease; }
+
+.fortschritt { text-align: center; color: var(--leise); font-size: 13px; margin: 10px 0 4px; }
+
+/* ---------- Listen ---------- */
+.zeile {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 0; border-bottom: 1px solid var(--linie);
+}
+.zeile:last-child { border-bottom: 0; }
+.zeile .haupt { flex: 1; min-width: 0; }
+.zeile .titel { font-weight: 600; }
+.zeile .unter { font-size: 12.5px; color: var(--leise); }
+.zeile .wert { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+
+.marke {
+  display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 7px;
+  border-radius: 20px; background: var(--linie); color: var(--leise);
+}
+.marke.fertig { background: #dcf0e2; color: #14532d; }
+.marke.offen { background: var(--linie); color: var(--leise); }
+@media (prefers-color-scheme: dark) { .marke.fertig { background: #1d4030; color: #8fe0af; } }
+
+.punkt-pille {
+  font-size: 11.5px; font-weight: 700; padding: 3px 8px; border-radius: 20px;
+  color: #fff; white-space: nowrap;
+}
+
+/* ---------- Knöpfe ---------- */
+.knopf {
+  background: var(--gruen); color: #fff; border: 0; border-radius: 11px;
+  padding: 13px 16px; font-size: 15.5px; font-weight: 600; cursor: pointer; width: 100%;
+}
+.knopf:active { opacity: .8; }
+.knopf.grau { background: var(--linie); color: var(--schrift); }
+.knopf.rot { background: #a83232; }
+.knopf.klein { padding: 9px 12px; font-size: 14px; width: auto; }
+.knopf:disabled { opacity: .45; }
+.knopf-reihe { display: flex; gap: 8px; margin-top: 10px; }
+.knopf-reihe .knopf { flex: 1; }
+
+input, select, textarea {
+  width: 100%; padding: 12px; font-size: 16px; border-radius: 10px;
+  border: 1px solid var(--linie); background: var(--grund); color: var(--schrift);
+}
+label.feld { display: block; margin-bottom: 10px; }
+label.feld span { display: block; font-size: 12.5px; color: var(--leise); margin-bottom: 4px; font-weight: 600; }
+
+/* ---------- Stoppuhr ---------- */
+.uhr {
+  font-size: 52px; font-weight: 800; text-align: center; font-variant-numeric: tabular-nums;
+  letter-spacing: -1px; margin: 6px 0 10px;
+}
+.team-wahl { display: flex; gap: 8px; }
+.team-wahl button {
+  flex: 1; border: 2px solid transparent; border-radius: 11px; padding: 14px 8px;
+  font-size: 14.5px; font-weight: 700; color: #fff; cursor: pointer;
+}
+.team-wahl button.aus { opacity: .38; }
+
+/* ---------- Navigation ---------- */
+#navi {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 30;
+  display: flex; background: var(--karte); border-top: 1px solid var(--linie);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+#navi button {
+  flex: 1; background: none; border: 0; padding: 8px 2px 9px; cursor: pointer;
+  font-size: 10.5px; color: var(--leise); display: flex; flex-direction: column;
+  align-items: center; gap: 2px; font-weight: 600;
+}
+#navi button span { font-size: 20px; line-height: 1; }
+#navi button.aktiv { color: var(--gruen-hell); }
+
+/* ---------- Dialog & Toast ---------- */
+[hidden] { display: none !important; }
+
+.dialog {
+  position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 50;
+  display: flex; align-items: center; justify-content: center; padding: 18px;
+}
+.dialog-karte {
+  background: var(--karte); border-radius: 16px; padding: 18px; width: 100%; max-width: 420px;
+  max-height: 84vh; overflow: auto;
+}
+.dialog-karte h2 { margin: 0 0 10px; font-size: 18px; }
+.dialog-knoepfe { display: flex; gap: 8px; margin-top: 14px; }
+.dialog-knoepfe .knopf { flex: 1; }
+
+.toast {
+  position: fixed; bottom: 84px; left: 50%; transform: translateX(-50%);
+  background: #262b2e; color: #fff; padding: 11px 18px; border-radius: 24px;
+  font-size: 14px; z-index: 60; max-width: 90vw; text-align: center;
+}
+
+.hinweis {
+  background: #fdf3e0; border: 1px solid #e8cf9e; color: #7a5310;
+  border-radius: 11px; padding: 11px 13px; font-size: 13.5px; margin-bottom: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  .hinweis { background: #33291a; border-color: #5c4826; color: #e8c68a; }
+}
+
+/* ---------- Auslosung ---------- */
+.los-name {
+  font-size: 21px; font-weight: 700; text-align: center; padding: 16px;
+  border-radius: 12px; color: #fff; margin: 8px 0; animation: rein .35s ease;
+}
+@keyframes rein { from { opacity: 0; transform: scale(.85); } }
+
+/* ---------- Urkunde ---------- */
+.urkunde {
+  background: #fff; color: #1f2421; border: 8px double var(--gold);
+  border-radius: 6px; padding: 26px 22px; text-align: center; margin-bottom: 14px;
+}
+.urkunde .kranz { font-size: 40px; }
+.urkunde .u-titel { font-size: 22px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--gold); font-weight: 800; margin: 6px 0 2px; }
+.urkunde .u-anlass { font-size: 13px; color: #6b7280; margin-bottom: 14px; }
+.urkunde .u-name { font-size: 27px; font-weight: 800; margin: 10px 0 4px; overflow-wrap: anywhere; }
+.urkunde .u-text { font-size: 14px; line-height: 1.6; margin: 8px auto; max-width: 30em; }
+.urkunde .u-platz { font-size: 17px; font-weight: 700; margin: 10px 0; }
+.urkunde .u-fuss { display: flex; justify-content: space-between; margin-top: 24px;
+  font-size: 11.5px; color: #6b7280; border-top: 1px solid #ddd; padding-top: 8px; }
+
+@media print {
+  #kopf, #navi, .nicht-drucken, .hinweis { display: none !important; }
+  body { padding: 0; background: #fff; }
+  #inhalt { padding: 0; max-width: none; }
+  .urkunde { page-break-after: always; border-color: #c99a2e; margin: 0; min-height: 96vh;
+    display: flex; flex-direction: column; justify-content: center; }
+  @page { size: A4; margin: 12mm; }
+}

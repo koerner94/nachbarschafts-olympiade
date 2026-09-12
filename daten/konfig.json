@@ -1,0 +1,27 @@
+{
+  "titel": "Nachbarschafts-Olympiade",
+  "untertitel": "Ein Tag, zwei Teams, eine Nachbarschaft",
+  "datum": "",
+  "ort": "",
+  "github": {
+    "besitzer": "koerner94",
+    "repo": "nachbarschafts-olympiade",
+    "zweig": "main"
+  },
+  "teams": [
+    {
+      "id": "a",
+      "name": "Die Rasenmäher",
+      "farbe": "#4a8c2a",
+      "emoji": "🌿"
+    },
+    {
+      "id": "b",
+      "name": "Die Heckenscheren",
+      "farbe": "#2f6fb3",
+      "emoji": "✂️"
+    }
+  ],
+  "punkte_unentschieden_anteil": 0.5,
+  "admin_pin": "2026"
+}

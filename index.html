@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nachbarschafts-Olympiade</title>
+<meta name="theme-color" content="#14532d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏅</text></svg>">
+<link rel="stylesheet" href="stil.css">
+</head>
+<body>
+
+<header id="kopf">
+  <div class="kopf-zeile">
+    <h1 id="kopf-titel">Nachbarschafts-Olympiade</h1>
+    <button id="knopf-neu" class="icon-knopf" title="Neu laden" aria-label="Neu laden">⟳</button>
+  </div>
+  <p id="kopf-unter"></p>
+  <p id="stand-info" class="stand-info"></p>
+</header>
+
+<main id="inhalt"><p class="laden">Lade …</p></main>
+
+<nav id="navi">
+  <button data-ansicht="rangliste" class="aktiv"><span>🏆</span>Stand</button>
+  <button data-ansicht="spiele"><span>📋</span>Spiele</button>
+  <button data-ansicht="teams"><span>👥</span>Teams</button>
+  <button data-ansicht="eintragen"><span>✏️</span>Eintragen</button>
+  <button data-ansicht="urkunden"><span>📜</span>Urkunden</button>
+</nav>
+
+<div id="dialog" class="dialog" hidden>
+  <div class="dialog-karte">
+    <h2 id="dialog-titel"></h2>
+    <div id="dialog-inhalt"></div>
+    <div class="dialog-knoepfe">
+      <button id="dialog-abbrechen" class="knopf grau">Abbrechen</button>
+      <button id="dialog-ok" class="knopf">OK</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>
