@@ -412,17 +412,32 @@ function zeichne() {
         Sie sind hier gespeichert, aber die anderen sehen sie noch nicht.
         <button class="knopf klein" id="knopf-nachsenden" style="margin-top:8px">Jetzt senden</button></div>`
     : '';
-  ziel.innerHTML = banner + ({
+  const neuesHtml = banner + ({
     rangliste: ansichtRangliste,
     spiele: ansichtSpiele,
     teams: ansichtTeams,
     eintragen: ansichtEintragen,
     urkunden: ansichtUrkunden
   }[zustand.ansicht] || ansichtRangliste)();
-  window.scrollTo(0, 0);
+
+  /* Nur wirklich neu aufbauen, wenn sich etwas geaendert hat. Sonst wuerde das
+     automatische Nachladen alle 25 Sekunden die Seite unnoetig neu setzen. */
+  if (neuesHtml !== zeichne.letztesHtml) {
+    ziel.innerHTML = neuesHtml;
+    zeichne.letztesHtml = neuesHtml;
+    bindeEreignisse();
+  }
+
+  /* Nach oben springen NUR beim Wechsel der Ansicht – niemals beim Aktualisieren,
+     sonst reisst es den Leser mitten aus der Spieleliste heraus. */
+  const wo = zustand.ansicht + '/' + (zustand.offenesSpiel || '');
+  if (wo !== zeichne.letzterOrt) {
+    zeichne.letzterOrt = wo;
+    window.scrollTo(0, 0);
+  }
+
   fackelPflegen();
   tonKnopfPflegen();
-  bindeEreignisse();
 }
 
 /* ---- Stand ---- */
