@@ -869,7 +869,8 @@ function ansichtUrkunden() {
   const urkunde = (p) => {
     const tm = team(p.team);
     const gewonnen = sieger === p.team;
-    const ehre = zustand.ergebnisse.auszeichnungen?.[p.name] || '';
+    const roh = zustand.ergebnisse.auszeichnungen?.[p.name] || '';
+    const ehre = typeof roh === 'string' ? { titel: roh, grund: '' } : roh;
     return `<div class="urkunde">
       <div class="kranz">${gewonnen ? '🏆' : '🎖️'}</div>
       <div class="u-titel">Urkunde</div>
@@ -880,7 +881,8 @@ function ansichtUrkunden() {
         <b style="color:${tm.farbe}">${esc(tm.name)}</b> gekämpft.</div>
       <div class="u-platz">${gewonnen ? '🥇 Siegerteam' : sieger === null ? '🤝 Unentschieden' : '🥈 Zweiter Platz'}
         · ${punkte[p.team] % 1 ? punkte[p.team].toFixed(1) : punkte[p.team]} Punkte</div>
-      ${ehre ? `<div class="u-text u-ehre">Besondere Auszeichnung: <b>${esc(ehre)}</b></div>` : ''}
+      ${ehre.titel ? `<div class="u-text u-ehre">Besondere Auszeichnung: <b>${esc(ehre.titel)}</b>${
+        ehre.grund ? `<span class="u-grund">${esc(ehre.grund)}</span>` : ''}</div>` : ''}
       <div class="u-linie" aria-hidden="true"><span>🌿</span></div>
       <div class="u-fuss">
         <span class="u-fuss-links">${esc(k.untertitel || '')}
@@ -1209,15 +1211,25 @@ function bindeEreignisse() {
   });
 
   setzen('knopf-ehre', () => {
-    const reihen = zustand.teilnehmer.personen.map((p) =>
-      `<label class="feld"><span>${esc(p.name)}</span>
-       <input type="text" data-ehre="${esc(p.name)}" value="${esc(zustand.ergebnisse.auszeichnungen?.[p.name] || '')}" placeholder="z. B. Schnellster Sackhüpfer"></label>`).join('');
+    const vorhanden = (name) => {
+      const r = zustand.ergebnisse.auszeichnungen?.[name] || '';
+      return typeof r === 'string' ? { titel: r, grund: '' } : r;
+    };
+    const reihen = zustand.teilnehmer.personen.map((p) => {
+      const a = vorhanden(p.name);
+      return `<label class="feld"><span>${esc(p.name)} – Titel</span>
+        <input type="text" data-ehre="${esc(p.name)}" value="${esc(a.titel || '')}" placeholder="z. B. Abrissbirne des Tages"></label>
+        <label class="feld" style="margin-top:-4px"><span>… und warum</span>
+        <input type="text" data-grund="${esc(p.name)}" value="${esc(a.grund || '')}" placeholder="z. B. räumte alle sechs Dosen auf einmal ab"></label>`;
+    }).join('');
     dialogZeigen('Auszeichnungen', reihen, async () => {
       zustand.ergebnisse.auszeichnungen ||= {};
       document.querySelectorAll('[data-ehre]').forEach((el) => {
-        const v = el.value.trim();
-        if (v) zustand.ergebnisse.auszeichnungen[el.dataset.ehre] = v;
-        else delete zustand.ergebnisse.auszeichnungen[el.dataset.ehre];
+        const name = el.dataset.ehre;
+        const titel = el.value.trim();
+        const grund = document.querySelector(`[data-grund="${CSS.escape(name)}"]`)?.value.trim() || '';
+        if (titel) zustand.ergebnisse.auszeichnungen[name] = { titel, grund };
+        else delete zustand.ergebnisse.auszeichnungen[name];
       });
       await speichereErgebnisse();
     }, 'Speichern');

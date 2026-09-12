@@ -368,6 +368,10 @@ label.haken input { width: auto; }
 .urkunde .u-text { font-size: 14px; line-height: 1.6; margin: 8px auto; max-width: 30em; }
 .urkunde .u-platz { font-size: 17px; font-weight: 700; margin: 10px 0; }
 .urkunde .u-ehre { font-style: italic; }
+.urkunde .u-grund {
+  display: block; font-style: normal; font-size: .82em;
+  color: #6b7280; margin-top: 3px;
+}
 .urkunde .u-linie {
   display: flex; align-items: center; gap: 10px;
   margin: 10px auto; max-width: 24em; font-size: 13px;

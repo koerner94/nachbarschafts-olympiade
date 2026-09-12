@@ -1,6 +1,6 @@
 {
   "_hinweis": "Wird von der App geschrieben. Je Spiel ein Eintrag mit dem Wert je Team. 'auszeichnungen' sind freie Ehrentitel fuer die Urkunden.",
-  "aktualisiert": "2026-09-12T18:58:16Z",
+  "aktualisiert": "2026-09-12T19:00:06Z",
   "stand": {
     "jenga": {
       "sieger": "b",
@@ -40,15 +40,41 @@
     }
   },
   "auszeichnungen": {
-    "Pia": "Abrissbirne des Tages",
-    "André": "Der Sieben-Kilometer-Schnipper",
-    "Toni": "Tiefflieger",
-    "Lea": "Feinschmeckerin",
-    "Thorsten": "Der blanke Wahnsinn",
-    "Torsten": "Der blanke Wahnsinn",
-    "Martina": "Der Königsstoß",
-    "Tina": "Jenga-Meisterin",
-    "Andi": "Nachzügler und Joker",
-    "Mara": "Die gute Seele der Heckenscheren"
+    "Pia": {
+      "titel": "Abrissbirne des Tages",
+      "grund": "räumte beim Dosenwerfen alle sechs Dosen auf einmal ab"
+    },
+    "André": {
+      "titel": "Der Sieben-Kilometer-Schnipper",
+      "grund": "schnippte den Kronkorken nach fehlerhafter Platzierung gefühlte sieben Kilometer weit"
+    },
+    "Martina": {
+      "titel": "Der Königsstoß",
+      "grund": "gab im Wikingerschach-Finale den entscheidenden Stoß auf den König"
+    },
+    "Mara": {
+      "titel": "Die gute Seele der Heckenscheren",
+      "grund": "war immer da, wo das Team sie brauchte"
+    },
+    "Andi": {
+      "titel": "Nachzügler und Joker",
+      "grund": "kam später dazu und räumte prompt beim Montagsmaler ab"
+    },
+    "Lea": {
+      "titel": "Feinschmeckerin",
+      "grund": "wusste beim Blind schmecken: Fla ist keine Vanillesoße"
+    },
+    "Tina": {
+      "titel": "Jenga-Meisterin",
+      "grund": "hielt den XXL-Turm mit Geduld und ruhigen Händen im Gleichgewicht"
+    },
+    "Toni": {
+      "titel": "Tiefflieger",
+      "grund": "entschied das Limbo für die Rasenmäher"
+    },
+    "Torsten": {
+      "titel": "Der blanke Wahnsinn",
+      "grund": "räumte beim Wäschekorb-Basketball mit unlauteren Mitteln ab"
+    }
   }
 }
