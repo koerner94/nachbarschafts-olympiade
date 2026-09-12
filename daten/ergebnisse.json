@@ -1,6 +1,6 @@
 {
   "_hinweis": "Wird von der App geschrieben. Je Spiel ein Eintrag mit dem Wert je Team. 'auszeichnungen' sind freie Ehrentitel fuer die Urkunden.",
-  "aktualisiert": "2026-09-12T18:14:32Z",
+  "aktualisiert": "2026-09-12T18:48:45Z",
   "stand": {
     "jenga": {
       "sieger": "b",
@@ -29,6 +29,14 @@
     "montagsmaler": {
       "sieger": "a",
       "notiz": ""
+    },
+    "limbo": {
+      "sieger": "a",
+      "notiz": "Toni hat es unter der Stange durchgeschafft"
+    },
+    "wikingerschach": {
+      "sieger": "b",
+      "notiz": "Im Finale durch geschlossene Teamleistung"
     }
   },
   "auszeichnungen": {}
