@@ -2,25 +2,35 @@
   "_hinweis": "Der Zeitplan für den Reiter „Ablauf\". Ein Eintrag mit 'spiel' holt Name, Dauer und Punkte automatisch aus spiele.json und zeigt an, ob das Spiel schon entschieden ist. Ein Eintrag mit 'titel' ist ein fester Programmpunkt. 'art' steuert nur das Aussehen: info, pause, essen oder ehrung. Zeiten einfach hier ändern.",
   "punkte": [
     {
-      "zeit": "15:30",
+      "zeit": "15:00",
       "titel": "Ankommen & Begrüßung",
       "art": "info",
-      "text": "Auslosung der beiden Teams in der App – ab hier brennt das Feuer."
+      "text": "Eine halbe Stunde zum Ankommen. Gegen 15:25 die Auslosung der beiden Teams in der App – ab da brennt das Feuer."
     },
-    { "zeit": "15:45", "spiel": "jenga" },
-    { "zeit": "16:10", "spiel": "sackwerfen", "text": "Toni kommt gegen 16 Uhr dazu." },
-    { "zeit": "16:30", "spiel": "blindschmecken" },
-    { "zeit": "16:50", "spiel": "dosenwerfen" },
-    { "zeit": "17:05", "spiel": "waeschekorb" },
-    { "zeit": "17:20", "spiel": "kronkorken" },
+    { "zeit": "15:30", "spiel": "jenga" },
     {
-      "zeit": "17:30",
+      "zeit": "15:55",
+      "spiel": "sackwerfen",
+      "text": "Toni kommt gegen 16 Uhr dazu und steigt hier ein."
+    },
+    { "zeit": "16:15", "spiel": "blindschmecken" },
+    { "zeit": "16:35", "spiel": "dosenwerfen" },
+    { "zeit": "16:50", "spiel": "waeschekorb" },
+    { "zeit": "17:05", "spiel": "kronkorken" },
+    {
+      "zeit": "17:15",
       "titel": "Pause",
       "art": "pause",
       "text": "Getränke, durchatmen, Grill anwerfen."
     },
-    { "zeit": "17:45", "spiel": "montagsmaler" },
-    { "zeit": "18:10", "spiel": "limbo" },
+    { "zeit": "17:30", "spiel": "montagsmaler" },
+    { "zeit": "17:55", "spiel": "limbo" },
+    {
+      "zeit": "18:10",
+      "titel": "Tische decken",
+      "art": "info",
+      "text": "Zwanzig Minuten Luft. Wenn alles glatt lief, könnt ihr auch schon früher essen – das verschafft dem Finale mehr Tageslicht."
+    },
     {
       "zeit": "18:30",
       "titel": "Essen",

@@ -40,40 +40,48 @@ daten/spruecke.json    die Sprüche des Kommentators
 daten/ablauf.json      der Zeitplan für den Reiter „Ablauf"
 ```
 
-## Zeitplan (Start 15:30, Essen 18:30)
+## Zeitplan (Begrüßung ab 15:00, erstes Spiel 15:30, Essen 18:30)
 
 Reihenfolge wie festgelegt. Die Nummer vor jedem Spiel steht auch in der App –
 und der ganze Plan steht dort im Reiter **🕒 Ablauf**, mit Uhrzeiten, Dauer und Punkten.
 Erledigte Spiele werden dort grau, das nächste wird golden hervorgehoben.
 Zeiten ändern: `daten/ablauf.json`.
 
-| Uhrzeit | Nr | Was |
-|---|---|---|
-| 15:30 | | Begrüßung, **Auslosung in der App** |
-| 15:45 | 1 | XXL Jenga (20 min) |
-| 16:10 | 2 | Sackwerfen (15 min) – *Toni ist ab ca. 16:00 dabei* |
-| 16:30 | 3 | Blind schmecken (15 min) |
-| 16:50 | 4 | Dosenwerfen (12 min) |
-| 17:05 | 5 | Wäschekorb-Basketball (12 min) |
-| 17:20 | 6 | Kronkorken-Weitschnippen (8 min) |
-| 17:30 | | **Pause**, Getränke, Grill anwerfen |
-| 17:45 | 7 | Montagsmaler (20 min) |
-| 18:08 | 8 | Limbo (12 min) |
-| **18:30** | | **Essen** |
-| 19:15 | 9 | 🔥 **Wikingerschach – das Finale** (25 min, **40 Punkte**) |
-| 19:45 | | **Siegerehrung, Urkunden, Goldene Ananas** |
+| Uhrzeit | Nr | Was | Dauer |
+|---|---|---|---|
+| 15:00 | | Ankommen & Begrüßung, gegen 15:25 **Auslosung in der App** | 30 min |
+| **15:30** | 1 | XXL Jenga | 20 min |
+| 15:55 | 2 | Sackwerfen – *Toni steigt hier ein* | 15 min |
+| 16:15 | 3 | Blind schmecken | 15 min |
+| 16:35 | 4 | Dosenwerfen | 12 min |
+| 16:50 | 5 | Wäschekorb-Basketball | 12 min |
+| 17:05 | 6 | Kronkorken-Weitschnippen | 8 min |
+| 17:15 | | **Pause**, Getränke, Grill anwerfen | 15 min |
+| 17:30 | 7 | Montagsmaler | 20 min |
+| 17:55 | 8 | Limbo | 12 min |
+| 18:10 | | Tische decken (20 min Luft) | |
+| **18:30** | | **Essen** | |
+| 19:15 | 9 | 🔥 **Wikingerschach – das Finale** (**40 Punkte**) | 25 min |
+| 19:45 | | **Siegerehrung, Urkunden, Goldene Ananas** | |
+
+Zwischen den Spielen sind jeweils 3 bis 5 Minuten zum Umbauen eingeplant.
+Der frühere Start verschafft euch **20 Minuten Puffer vor dem Essen** – die waren
+vorher nicht da.
 
 ### Toni
 
 Toni steht ganz normal in der Auslosung und bekommt damit ein zufälliges Team –
 er kommt nur später dazu. In der Teams-Liste steht bei ihm „kommt gegen 16 Uhr".
-Er verpasst damit nur XXL Jenga.
+Durch den früheren Start verpasst er jetzt XXL Jenga und eventuell den Anfang
+vom Sackwerfen.
 
 ### Achtung Tageslicht
 
 Ende September geht die Sonne gegen **19:30 Uhr** unter. Wikingerschach im Dunkeln
 funktioniert nicht – man sieht die Klötze nicht mehr. Deshalb steht das Finale hier
 schon um 19:15. Falls das Essen länger dauert: Baustrahler ans Kubb-Feld stellen.
+Oder ihr nutzt den neuen Puffer und esst schon um 18:15 – dann kann das Finale um
+19:00 losgehen und ihr habt sicher genug Licht.
 
 ### Punkteverteilung
 
