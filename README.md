@@ -39,6 +39,32 @@ daten/ergebnisse.json wird von der App geschrieben
 daten/spruecke.json    die Sprüche des Kommentators
 ```
 
+## Zeitplan (Start 15:30, Essen 18:30)
+
+Neun Spiele sind **139 Minuten reine Spielzeit**. Dazu kommen Begrüßung, Auslosung,
+Umbau zwischen den Stationen und eine Pause. Alles vor dem Essen wird deshalb zu eng.
+Empfehlung: sieben Spiele vorher, zwei nach dem Essen.
+
+| Uhrzeit | Was |
+|---|---|
+| 15:30 | Ankommen, Begrüßung, **Auslosung in der App** |
+| 15:45 | Wikingerschach (25 min, Zeitbremse!) |
+| 16:15 | Sackwerfen (15 min) |
+| 16:35 | Dosenwerfen (12 min) |
+| 16:50 | Wäschekorb-Basketball (12 min) |
+| 17:05 | Kronkorken-Weitschnippen (8 min) |
+| 17:15 | **Pause**, Getränke, Grill anwerfen |
+| 17:30 | XXL Jenga (20 min) |
+| 17:55 | Blind schmecken (15 min) – direkt vor dem Essen, alle sind hungrig |
+| 18:15 | Tische decken |
+| **18:30** | **Essen** |
+| 19:30 | Montagsmaler (20 min) – am Tisch, keine Anstrengung nach dem Essen |
+| 19:55 | Limbo (12 min) – Finale mit Musik, 15 Punkte, hier dreht sich noch alles |
+| 20:10 | **Siegerehrung, Urkunden, Goldene Ananas** |
+
+Wenn wirklich alles vor dem Essen laufen soll: möglich, aber ohne Pause und mit
+strengem Blick auf die Uhr. Rechne dann mit 18:45 statt 18:30.
+
 ## Leute hinzufügen, entfernen, neu auslosen
 
 Alles unter „Teams", wenn du mit der PIN freigeschaltet bist:
