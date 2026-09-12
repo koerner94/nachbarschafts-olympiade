@@ -4,7 +4,7 @@
    schreibt Aenderungen direkt in das Projekt zurueck – alle anderen sehen sie
    beim naechsten Aktualisieren. */
 
-const DATEIEN = ['konfig.json', 'teilnehmer.json', 'spiele.json', 'ergebnisse.json', 'spruecke.json', 'ablauf.json'];
+const ALLE_DATEIEN = ['konfig.json', 'teilnehmer.json', 'spiele.json', 'ergebnisse.json', 'spruecke.json', 'ablauf.json'];
 const SPEICHER = 'olympiade.';
 
 /* Zwei Links auf dieselbe App:
@@ -72,6 +72,10 @@ function jetzt() {
 
 let rohGeht = true; /* wird auf false gesetzt, sobald GitHub-Roh-Zugriff nicht klappt */
 
+/* Diese beiden Dateien aendern sich waehrend der Olympiade. Nur sie werden staendig
+   nachgeladen – der Rest nur beim Start und beim Tippen auf das Neu-laden-Zeichen. */
+const WECHSELND = ['ergebnisse.json', 'teilnehmer.json'];
+
 function rohUrl(datei) {
   const g = zustand.konfig?.github;
   if (rohGeht && g && g.besitzer && g.repo && !g.besitzer.startsWith('DEIN')) {
@@ -80,39 +84,41 @@ function rohUrl(datei) {
   return null;
 }
 
-/* Holt eine Datei. Drei Quellen, in dieser Reihenfolge:
-   1. Mit GitHub-Schluessel direkt ueber die Schnittstelle – immer der allerneueste Stand.
-   2. Die Kopie auf der eigenen Seite. Die ist frisch, sobald GitHub die Seite neu
-      gebaut hat (etwa eine Minute nach dem Speichern).
-   3. Die Rohfassung bei GitHub. Die haengt bis zu fuenf Minuten hinterher, weil
-      GitHub sie zwischenspeichert – deshalb nur als Notnagel. */
-async function holeDatei(datei) {
-  const g = zustand.konfig?.github;
-
-  if (zustand.token && g?.besitzer && g?.repo) {
-    try {
-      const r = await fetch(
-        `https://api.github.com/repos/${g.besitzer}/${g.repo}/contents/daten/${datei}?ref=${g.zweig || 'main'}&t=${Date.now()}`,
-        { headers: { Authorization: 'Bearer ' + zustand.token, Accept: 'application/vnd.github.raw' }, cache: 'no-store' });
-      if (r.ok) return await r.json();
-    } catch (e) { /* weiter mit Quelle 2 */ }
-  }
-
+async function versuche(url, kopf) {
   try {
-    const r = await fetch(`daten/${datei}?t=${Date.now()}`, { cache: 'no-store' });
-    if (r.ok) return await r.json();
-  } catch (e) { /* weiter mit Quelle 3 */ }
-
-  const roh = rohUrl(datei);
-  if (roh) {
-    const r = await fetch(roh, { cache: 'no-store' });
-    if (r.ok) return await r.json();
-    if (r.status === 404) rohGeht = false;
-  }
-  throw new Error('Konnte ' + datei + ' nicht laden');
+    const r = await fetch(url, kopf ? { headers: kopf, cache: 'no-store' } : { cache: 'no-store' });
+    if (!r.ok) {
+      if (r.status === 404 && url.includes('raw.githubusercontent')) rohGeht = false;
+      return null;
+    }
+    return await r.json();
+  } catch (e) { return null; }
 }
 
-async function ladeAlles(still = false) {
+/* Holt eine Datei aus allen erreichbaren Quellen gleichzeitig und nimmt die neueste.
+   Grund: die Kopie auf der eigenen Seite ist erst da, wenn GitHub die Seite neu gebaut
+   hat – und das passiert nicht immer zuverlaessig – waehrend die Rohfassung bis zu fuenf
+   Minuten hinterherhinkt. Wer zuerst aktuell ist, gewinnt. So wartet niemand unnoetig. */
+async function holeDatei(datei) {
+  const g = zustand.konfig?.github;
+  const quellen = [];
+
+  if (zustand.token && g?.besitzer && g?.repo) {
+    quellen.push(versuche(
+      `https://api.github.com/repos/${g.besitzer}/${g.repo}/contents/daten/${datei}?ref=${g.zweig || 'main'}&t=${Date.now()}`,
+      { Authorization: 'Bearer ' + zustand.token, Accept: 'application/vnd.github.raw' }));
+  }
+  quellen.push(versuche(`daten/${datei}?t=${Date.now()}`));
+  const roh = rohUrl(datei);
+  if (roh) quellen.push(versuche(roh));
+
+  const treffer = (await Promise.all(quellen)).filter(Boolean);
+  if (!treffer.length) throw new Error('Konnte ' + datei + ' nicht laden');
+  return treffer.reduce((x, y) =>
+    String(y.aktualisiert || '') > String(x.aktualisiert || '') ? y : x);
+}
+
+async function ladeAlles(still = false, alles = false) {
   if (zustand.laedt) return;
   zustand.laedt = true;
   $('#knopf-neu').classList.add('dreht');
@@ -123,6 +129,9 @@ async function ladeAlles(still = false) {
     }
     /* allSettled statt all: wenn eine einzelne Datei zickt, sollen die anderen
        trotzdem ankommen. Sonst faellt die ganze App auf den alten Stand zurueck. */
+    /* Beim ersten Laden und beim Tippen auf ⟳ alles holen, sonst nur was sich aendert.
+       Das spart auf dem Handy eine Menge Datenvolumen. */
+    const DATEIEN = (alles || !zustand.spiele) ? ALLE_DATEIEN : WECHSELND;
     const geladen = await Promise.allSettled(DATEIEN.map(holeDatei));
     const schluessel = { 'konfig.json': 'konfig', 'teilnehmer.json': 'teilnehmer', 'spiele.json': 'spiele', 'ergebnisse.json': 'ergebnisse', 'spruecke.json': 'spruecke', 'ablauf.json': 'ablauf' };
     let geklappt = 0;
@@ -167,6 +176,8 @@ function b64(text) {
 
 async function speichere(datei, objekt, nachricht) {
   const g = zustand.konfig.github;
+  /* Zeitstempel in jede Datei, damit beim Lesen die neueste Quelle gewinnt. */
+  objekt.aktualisiert = new Date().toISOString();
   zustand.merker[datei] = { objekt, nachricht };
   if (!zustand.token) {
     zustand.dreckig[datei] = nachricht || 'Änderung';
@@ -204,8 +215,19 @@ async function speichere(datei, objekt, nachricht) {
       if (r.status === 409 || r.status === 422) { zustand.shas[datei] = null; continue; }
       const txt = await r.text();
       zustand.dreckig[datei] = nachricht || 'Änderung';
-      toast('Speichern fehlgeschlagen (' + r.status + ') – bleibt vorerst hier');
       console.error(txt);
+      /* Klartext statt Fehlernummer – und nur, wenn gerade kein Fenster offen ist. */
+      if ($('#dialog').hidden) {
+        const e = await schluesselPruefen(zustand.token);
+        dialogZeigen('Speichern hat nicht geklappt',
+          `<p style="font-size:14px;margin-top:0">${esc(e.text)}</p>
+           <p style="font-size:13px;color:var(--leise);margin-bottom:0">Dein Eintrag ist nicht verloren –
+           er liegt auf diesem Handy und wird gesendet, sobald es wieder geht.
+           (Fehlernummer ${r.status})</p>`, null, 'Verstanden');
+        $('#dialog-abbrechen').hidden = true;
+      } else {
+        toast('Speichern fehlgeschlagen (' + r.status + ') – Eintrag bleibt hier');
+      }
       return false;
     }
     toast('Speichern fehlgeschlagen – jemand war schneller. Bitte neu laden.');
@@ -1053,9 +1075,23 @@ function bindeEreignisse() {
         zustand.token = $('#token-feld').value.trim();
         localStorage.setItem(SPEICHER + 'token', zustand.token);
         zustand.shas = {};
-        toast(zustand.token ? 'Schlüssel gespeichert' : 'Schlüssel gelöscht');
-        if (zustand.token) nachsenden().then(zeichne);
-        else zeichne();
+        if (!zustand.token) { toast('Schlüssel gelöscht'); zeichne(); return; }
+        /* Sofort nachsehen, ob es wirklich funktioniert – nicht erst beim ersten Ergebnis. */
+        schluesselPruefen(zustand.token).then(async (e) => {
+          if (e.ok) {
+            await nachsenden();
+            const offen = Object.keys(zustand.dreckig).length;
+            dialogZeigen('✅ Speichern funktioniert',
+              `<p style="font-size:14px;margin:0">${offen
+                ? 'Es sind noch ' + offen + ' Änderungen offen – die bekomme ich beim nächsten Versuch mit.'
+                : 'Alles gesendet. Ab jetzt sehen alle deine Eintragungen.'}</p>`, null, 'Super');
+          } else {
+            dialogZeigen('⚠️ Noch nicht geschafft',
+              `<p style="font-size:14px;margin:0">${esc(e.text)}</p>`, null, 'Verstanden');
+          }
+          $('#dialog-abbrechen').hidden = true;
+          zeichne();
+        });
       }, 'Speichern');
 
     const pruef = $('#knopf-pruefen');
@@ -1230,7 +1266,7 @@ document.querySelectorAll('#navi button').forEach((b) => b.onclick = () => {
   zeichne();
 });
 
-$('#knopf-neu').onclick = () => ladeAlles();
+$('#knopf-neu').onclick = () => ladeAlles(false, true);
 $('#dialog-abbrechen').onclick = dialogSchliessen;
 $('#dialog-ok').onclick = () => { const f = dialogOk; dialogSchliessen(); if (f) f(); };
 $('#dialog').onclick = (e) => { if (e.target.id === 'dialog') dialogSchliessen(); };
