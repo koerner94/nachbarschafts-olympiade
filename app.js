@@ -445,13 +445,17 @@ function zeichne() {
         Sie sind hier gespeichert, aber die anderen sehen sie noch nicht.
         <button class="knopf klein" id="knopf-nachsenden" style="margin-top:8px">Jetzt senden</button></div>`
     : '';
+  const macher = k.veranstalter
+    ? `<p class="macher nicht-drucken">Ausgerichtet von <b>${esc(k.veranstalter)}</b>${
+        k.beiname ? ` &middot; aka <b>${esc(k.beiname)}</b> 👑` : ''}</p>`
+    : '';
   const neuesHtml = banner + ({
     rangliste: ansichtRangliste,
     spiele: ansichtSpiele,
     teams: ansichtTeams,
     eintragen: ansichtEintragen,
     urkunden: ansichtUrkunden
-  }[zustand.ansicht] || ansichtRangliste)();
+  }[zustand.ansicht] || ansichtRangliste)() + macher;
 
   /* Nur wirklich neu aufbauen, wenn sich etwas geaendert hat. Sonst wuerde das
      automatische Nachladen alle 25 Sekunden die Seite unnoetig neu setzen. */
@@ -767,7 +771,14 @@ function ansichtUrkunden() {
         · ${punkte[p.team] % 1 ? punkte[p.team].toFixed(1) : punkte[p.team]} Punkte</div>
       ${ehre ? `<div class="u-text u-ehre">Besondere Auszeichnung: <b>${esc(ehre)}</b></div>` : ''}
       <div class="u-linie" aria-hidden="true"><span>🌿</span></div>
-      <div class="u-fuss"><span>${esc(k.untertitel || '')}</span><span>Unterschrift: ______________</span></div>
+      <div class="u-fuss">
+        <span class="u-fuss-links">${esc(k.untertitel || '')}</span>
+        <span class="u-sig">
+          <span class="u-sig-strich"></span>
+          <b>${esc(k.veranstalter || 'Der Ausrichter')}</b>
+          ${k.beiname ? `<em>aka ${esc(k.beiname)} 👑</em>` : ''}
+        </span>
+      </div>
     </div>`;
   };
 

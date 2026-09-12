@@ -187,3 +187,13 @@ ohne sie zu löschen. Punkte, Regeln und Material lassen sich frei ändern.
 Reiter „Urkunden" → „Alle Urkunden drucken" → im Druckfenster „Als PDF sichern".
 Je Person eine A4-Seite. Ehrentitel („Schnellster Sackhüpfer") vergibst du vorher
 über „Auszeichnungen vergeben".
+
+---
+
+## Wer das hier ausrichtet
+
+**André Steinker** · aka **King of Kotelett** 👑
+
+Steht in `daten/konfig.json` unter `veranstalter` und `beiname` – dort änderbar.
+Erscheint an zwei Stellen: als Fußzeile unter jeder Seite der App und als
+Unterschriftszeile auf jeder Urkunde.
