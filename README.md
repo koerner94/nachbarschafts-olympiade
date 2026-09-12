@@ -41,29 +41,40 @@ daten/spruecke.json    die Sprüche des Kommentators
 
 ## Zeitplan (Start 15:30, Essen 18:30)
 
-Neun Spiele sind **139 Minuten reine Spielzeit**. Dazu kommen Begrüßung, Auslosung,
-Umbau zwischen den Stationen und eine Pause. Alles vor dem Essen wird deshalb zu eng.
-Empfehlung: sieben Spiele vorher, zwei nach dem Essen.
+Acht Spiele vor dem Essen (114 Minuten reine Spielzeit), **Wikingerschach als Finale
+danach**. Dazu Begrüßung, Auslosung, Umbau zwischen den Stationen und eine Pause.
 
 | Uhrzeit | Was |
 |---|---|
 | 15:30 | Ankommen, Begrüßung, **Auslosung in der App** |
-| 15:45 | Wikingerschach (25 min, Zeitbremse!) |
-| 16:15 | Sackwerfen (15 min) |
-| 16:35 | Dosenwerfen (12 min) |
-| 16:50 | Wäschekorb-Basketball (12 min) |
-| 17:05 | Kronkorken-Weitschnippen (8 min) |
-| 17:15 | **Pause**, Getränke, Grill anwerfen |
-| 17:30 | XXL Jenga (20 min) |
-| 17:55 | Blind schmecken (15 min) – direkt vor dem Essen, alle sind hungrig |
-| 18:15 | Tische decken |
+| 15:45 | XXL Jenga (20 min) |
+| 16:10 | Sackwerfen (15 min) |
+| 16:30 | Dosenwerfen (12 min) |
+| 16:45 | Wäschekorb-Basketball (12 min) |
+| 17:00 | Kronkorken-Weitschnippen (8 min) |
+| 17:10 | **Pause**, Getränke, Grill anwerfen |
+| 17:30 | Montagsmaler (20 min) |
+| 17:55 | Limbo (12 min) |
+| 18:10 | Blind schmecken (15 min) – direkt vors Essen, alle sind hungrig |
 | **18:30** | **Essen** |
-| 19:30 | Montagsmaler (20 min) – am Tisch, keine Anstrengung nach dem Essen |
-| 19:55 | Limbo (12 min) – Finale mit Musik, 15 Punkte, hier dreht sich noch alles |
-| 20:10 | **Siegerehrung, Urkunden, Goldene Ananas** |
+| 19:15 | 🔥 **WIKINGERSCHACH – Das Finale** (25 min, 25 Punkte) |
+| 19:45 | **Siegerehrung, Urkunden, Goldene Ananas** |
 
-Wenn wirklich alles vor dem Essen laufen soll: möglich, aber ohne Pause und mit
-strengem Blick auf die Uhr. Rechne dann mit 18:45 statt 18:30.
+### Achtung Tageslicht
+
+Ende September geht die Sonne gegen **19:30 Uhr** unter. Wikingerschach im Dunkeln
+funktioniert nicht – man sieht die Klötze nicht mehr. Deshalb steht das Finale hier
+schon um 19:15 und nicht erst um 19:30. Drei Möglichkeiten, falls es eng wird:
+
+1. Essen um 18:15 beginnen, Finale um 19:00.
+2. Baustrahler oder Gartenbeleuchtung ans Kubb-Feld stellen.
+3. Essenspause auf 45 Minuten begrenzen und pünktlich anpfeifen.
+
+### Punkteverteilung
+
+85 Punkte werden vor dem Essen vergeben, **25 im Finale**. Wer vorher mit weniger als
+25 Punkten hinten liegt, kann den Tag im Wikingerschach noch drehen. Genau darum
+steht es am Schluss.
 
 ## Leute hinzufügen, entfernen, neu auslosen
 

@@ -2,22 +2,9 @@
   "_hinweis": "Alle Disziplinen. 'aktiv': false = wird in der App ausgeblendet. 'typ' steuert die Eingabe: zeit = Stoppuhr (Sekunden), weite = Meter/Zentimeter, anzahl = Stueck/Treffer/Punkte, sieger = nur Team antippen. 'richtung' klein = kleinerer Wert gewinnt. 'dauer' ist die geplante Spielzeit in Minuten, nur zur Planung.",
   "spiele": [
     {
-      "id": "wikingerschach",
-      "name": "Wikingerschach",
-      "reihe": "Die großen Duelle",
-      "typ": "sieger",
-      "richtung": "gross",
-      "einheit": "",
-      "punkte": 20,
-      "dauer": 25,
-      "material": "Kubb-Set (10 Kubbs, 6 Wurfhölzer, König, 6 Eckstäbe), Rasenfläche etwa 5 x 8 m",
-      "regel": "Abwechselnd werfen beide Teams ihre Wurfhölzer, immer von unten und senkrecht – kein Drehen um die eigene Achse. Erst alle Kubbs der Gegenseite umwerfen, ganz zum Schluss den König. Wer den König zu früh trifft, hat sofort verloren. Königsdisziplin mit doppelten Punkten. Zeitbremse: Nach 25 Minuten ist Schluss – dann gewinnt das Team, bei dem weniger Kubbs stehen. Sonst frisst dieses Spiel den halben Nachmittag.",
-      "aktiv": true
-    },
-    {
       "id": "jenga",
       "name": "XXL Jenga",
-      "reihe": "Die großen Duelle",
+      "reihe": "Geschick & Köpfchen",
       "typ": "sieger",
       "richtung": "gross",
       "einheit": "",
@@ -82,7 +69,7 @@
     {
       "id": "montagsmaler",
       "name": "Montagsmaler",
-      "reihe": "Köpfchen & Gaumen",
+      "reihe": "Geschick & Köpfchen",
       "typ": "anzahl",
       "richtung": "gross",
       "einheit": "Begriffe",
@@ -93,9 +80,22 @@
       "aktiv": true
     },
     {
+      "id": "limbo",
+      "name": "Limbo",
+      "reihe": "Geschick & Köpfchen",
+      "typ": "weite",
+      "richtung": "klein",
+      "einheit": "cm Höhe",
+      "punkte": 10,
+      "dauer": 12,
+      "material": "Besenstiel, zwei Halter, Zollstock, Musik",
+      "regel": "Rückwärts gebeugt unter der Stange durch, nichts außer den Füßen darf den Boden berühren. Die Stange wird Runde für Runde tiefer gelegt. Die niedrigste geschaffte Höhe je Team zählt.",
+      "aktiv": true
+    },
+    {
       "id": "blindschmecken",
       "name": "Blind schmecken",
-      "reihe": "Köpfchen & Gaumen",
+      "reihe": "Geschick & Köpfchen",
       "typ": "anzahl",
       "richtung": "gross",
       "einheit": "Punkte",
@@ -106,16 +106,16 @@
       "aktiv": true
     },
     {
-      "id": "limbo",
-      "name": "Limbo",
-      "reihe": "Finale",
-      "typ": "weite",
-      "richtung": "klein",
-      "einheit": "cm Höhe",
-      "punkte": 15,
-      "dauer": 12,
-      "material": "Besenstiel, zwei Halter, Zollstock, Musik",
-      "regel": "Rückwärts gebeugt unter der Stange durch, nichts außer den Füßen darf den Boden berühren. Die Stange wird Runde für Runde tiefer gelegt. Die niedrigste geschaffte Höhe je Team zählt – hier kann sich am Ende noch alles drehen.",
+      "id": "wikingerschach",
+      "name": "Wikingerschach",
+      "reihe": "Das große Finale",
+      "typ": "sieger",
+      "richtung": "gross",
+      "einheit": "",
+      "punkte": 25,
+      "dauer": 25,
+      "material": "Kubb-Set (10 Kubbs, 6 Wurfhölzer, König, 6 Eckstäbe), Rasenfläche etwa 5 x 8 m",
+      "regel": "Abwechselnd werfen beide Teams ihre Wurfhölzer, immer von unten und senkrecht – kein Drehen um die eigene Achse. Erst alle Kubbs der Gegenseite umwerfen, ganz zum Schluss den König. Wer den König zu früh trifft, hat sofort verloren. Das Finale nach dem Essen und mit 25 Punkten die höchste Beute des Tages – hier kann sich alles drehen. Zeitbremse: Nach 25 Minuten ist Schluss, dann gewinnt das Team, bei dem weniger Kubbs stehen.",
       "aktiv": true
     }
   ]
