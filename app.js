@@ -79,18 +79,36 @@ function rohUrl(datei) {
   return null;
 }
 
+/* Holt eine Datei. Drei Quellen, in dieser Reihenfolge:
+   1. Mit GitHub-Schluessel direkt ueber die Schnittstelle – immer der allerneueste Stand.
+   2. Die Kopie auf der eigenen Seite. Die ist frisch, sobald GitHub die Seite neu
+      gebaut hat (etwa eine Minute nach dem Speichern).
+   3. Die Rohfassung bei GitHub. Die haengt bis zu fuenf Minuten hinterher, weil
+      GitHub sie zwischenspeichert – deshalb nur als Notnagel. */
 async function holeDatei(datei) {
+  const g = zustand.konfig?.github;
+
+  if (zustand.token && g?.besitzer && g?.repo) {
+    try {
+      const r = await fetch(
+        `https://api.github.com/repos/${g.besitzer}/${g.repo}/contents/daten/${datei}?ref=${g.zweig || 'main'}&t=${Date.now()}`,
+        { headers: { Authorization: 'Bearer ' + zustand.token, Accept: 'application/vnd.github.raw' }, cache: 'no-store' });
+      if (r.ok) return await r.json();
+    } catch (e) { /* weiter mit Quelle 2 */ }
+  }
+
+  try {
+    const r = await fetch(`daten/${datei}?t=${Date.now()}`, { cache: 'no-store' });
+    if (r.ok) return await r.json();
+  } catch (e) { /* weiter mit Quelle 3 */ }
+
   const roh = rohUrl(datei);
   if (roh) {
-    try {
-      const r = await fetch(roh, { cache: 'no-store' });
-      if (r.ok) return await r.json();
-      if (r.status === 404) rohGeht = false; /* Projekt noch nicht online – ab jetzt lokal lesen */
-    } catch (e) { /* kein Netz: unten weiter */ }
+    const r = await fetch(roh, { cache: 'no-store' });
+    if (r.ok) return await r.json();
+    if (r.status === 404) rohGeht = false;
   }
-  const r2 = await fetch(`daten/${datei}?t=${Date.now()}`, { cache: 'no-store' });
-  if (!r2.ok) throw new Error(r2.status + ' ' + datei);
-  return await r2.json();
+  throw new Error('Konnte ' + datei + ' nicht laden');
 }
 
 async function ladeAlles(still = false) {
@@ -102,12 +120,18 @@ async function ladeAlles(still = false) {
       const r = await fetch('daten/konfig.json?t=' + Date.now(), { cache: 'no-store' });
       zustand.konfig = await r.json();
     }
-    const geladen = await Promise.all(DATEIEN.map(holeDatei));
+    /* allSettled statt all: wenn eine einzelne Datei zickt, sollen die anderen
+       trotzdem ankommen. Sonst faellt die ganze App auf den alten Stand zurueck. */
+    const geladen = await Promise.allSettled(DATEIEN.map(holeDatei));
     const schluessel = { 'konfig.json': 'konfig', 'teilnehmer.json': 'teilnehmer', 'spiele.json': 'spiele', 'ergebnisse.json': 'ergebnisse', 'spruecke.json': 'spruecke' };
+    let geklappt = 0;
     DATEIEN.forEach((datei, i) => {
+      if (geladen[i].status !== 'fulfilled') return;
+      geklappt++;
       /* Eigene, noch nicht gespeicherte Eingaben duerfen nicht ueberschrieben werden. */
-      if (!zustand.dreckig[datei]) zustand[schluessel[datei]] = geladen[i];
+      if (!zustand.dreckig[datei]) zustand[schluessel[datei]] = geladen[i].value;
     });
+    if (!geklappt) throw new Error('Keine einzige Datei erreichbar');
     zustand.offline = false;
     zustand.zuletzt = new Date();
     localStorage.setItem(SPEICHER + 'cache', JSON.stringify({
@@ -214,17 +238,26 @@ async function speichereErgebnisse() {
 /* Wie steht das Spiel gerade? Daraus waehlt der Kommentator seine Schublade. */
 function situation() {
   const { punkte, fertig } = punktestand();
-  const offen = aktiveSpiele().length - fertig.length;
+  const entschieden = new Set(fertig.map((x) => x.spiel.id));
+  const offeneSpiele = aktiveSpiele().filter((sp) => !entschieden.has(sp.id));
+  const offen = offeneSpiele.length;
+  /* Wie viele Punkte sind ueberhaupt noch zu holen? Danach richtet sich, ob es
+     noch spannend ist – nicht nach der blossen Zahl der offenen Spiele.
+     Das Finale allein ist fast ein Drittel des Tages wert. */
+  const offenePunkte = offeneSpiele.reduce((n, sp) => n + sp.punkte, 0);
   const d = Math.abs(punkte.a - punkte.b);
   const f = punkte.a > punkte.b ? 'a' : 'b';
   const v = f === 'a' ? 'b' : 'a';
-  if (!fertig.length) return { kat: 'start', d: 0 };
-  if (!offen) return d === 0 ? { kat: 'endeGleich', d } : { kat: 'ende', f, v, d };
-  if (d === 0) return { kat: 'gleich', d };
-  if (offen <= 3 && d <= 20) return { kat: 'endspurt', f, v, d };
-  if (d <= 10) return { kat: 'knapp', f, v, d };
-  if (d <= 25) return { kat: 'deutlich', f, v, d };
-  return { kat: 'klar', f, v, d };
+  const lage = { f, v, d, offen, offenePunkte };
+
+  if (!fertig.length) return { ...lage, kat: 'start', d: 0 };
+  if (!offen) return d === 0 ? { ...lage, kat: 'endeGleich' } : { ...lage, kat: 'ende' };
+  if (d === 0) return { ...lage, kat: 'gleich' };
+  if (d > offenePunkte) return { ...lage, kat: 'klar' };      /* rechnerisch gelaufen */
+  if (offen <= 2) return { ...lage, kat: 'endspurt' };        /* alles haengt am Schluss */
+  if (d <= 10) return { ...lage, kat: 'knapp' };
+  if (d <= 25) return { ...lage, kat: 'deutlich' };
+  return { ...lage, kat: 'klar' };
 }
 
 /* Zieht einen Spruch, der auf diesem Handy noch nicht dran war.

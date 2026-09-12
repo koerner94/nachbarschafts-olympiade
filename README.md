@@ -57,7 +57,7 @@ danach**. Dazu Begrüßung, Auslosung, Umbau zwischen den Stationen und eine Pau
 | 17:55 | Limbo (12 min) |
 | 18:10 | Blind schmecken (15 min) – direkt vors Essen, alle sind hungrig |
 | **18:30** | **Essen** |
-| 19:15 | 🔥 **WIKINGERSCHACH – Das Finale** (25 min, 25 Punkte) |
+| 19:15 | 🔥 **WIKINGERSCHACH – Das Finale** (25 min, **40 Punkte**) |
 | 19:45 | **Siegerehrung, Urkunden, Goldene Ananas** |
 
 ### Achtung Tageslicht
@@ -72,9 +72,25 @@ schon um 19:15 und nicht erst um 19:30. Drei Möglichkeiten, falls es eng wird:
 
 ### Punkteverteilung
 
-85 Punkte werden vor dem Essen vergeben, **25 im Finale**. Wer vorher mit weniger als
-25 Punkten hinten liegt, kann den Tag im Wikingerschach noch drehen. Genau darum
-steht es am Schluss.
+125 Punkte gibt es insgesamt: **85 vor dem Essen, 40 im Finale.** Das Wikingerschach
+ist damit fast ein Drittel des ganzen Tages wert. Wer vorher mit weniger als 40 Punkten
+hinten liegt, kann den Tag dort noch drehen – und das ist praktisch immer der Fall.
+Nur bei einem Vorsprung von über 40 Punkten steht der Sieger schon vor dem Essen fest.
+
+| Spiel | Punkte |
+|---|---|
+| Wikingerschach (Finale) | 40 |
+| XXL Jenga | 15 |
+| Montagsmaler | 15 |
+| Sackwerfen | 10 |
+| Dosenwerfen | 10 |
+| Wäschekorb-Basketball | 10 |
+| Blind schmecken | 10 |
+| Limbo | 10 |
+| Kronkorken-Weitschnippen | 5 |
+
+Kalle rechnet mit: Solange der Rückstand kleiner ist als die noch zu holenden Punkte,
+sagt er „hier ist noch alles offen" statt „das ist gelaufen".
 
 ## Leute hinzufügen, entfernen, neu auslosen
 
@@ -85,6 +101,18 @@ Alles unter „Teams", wenn du mit der PIN freigeschaltet bist:
 * **✕ neben einem Namen** – Person entfernen, wenn jemand absagt.
 * **🎲 Alles neu auslosen** – wirft die bisherige Einteilung weg und zieht komplett neu.
   Alle Handys zeigen danach die neue Einteilung.
+
+## Wie aktuell sehen die anderen den Punktestand?
+
+Die App holt die Daten in dieser Reihenfolge:
+
+1. **Mit GitHub-Schlüssel** (dein Handy): direkt bei GitHub – immer sofort aktuell.
+2. **Ohne Schlüssel** (alle anderen): von der eigenen Seite. GitHub baut die Seite nach
+   jedem Eintrag neu, das dauert etwa **eine Minute**. Danach sehen es alle.
+3. Notfalls die Rohfassung bei GitHub – die hängt bis zu fünf Minuten hinterher und
+   wird nur benutzt, wenn die ersten beiden Wege nicht gehen.
+
+Kurz: Du siehst deinen Eintrag sofort, die Nachbarn nach etwa einer Minute.
 
 ## Kalle vom Balkon, der Kommentator
 

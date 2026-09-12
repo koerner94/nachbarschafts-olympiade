@@ -112,10 +112,10 @@
       "typ": "sieger",
       "richtung": "gross",
       "einheit": "",
-      "punkte": 25,
+      "punkte": 40,
       "dauer": 25,
       "material": "Kubb-Set (10 Kubbs, 6 Wurfhölzer, König, 6 Eckstäbe), Rasenfläche etwa 5 x 8 m",
-      "regel": "Abwechselnd werfen beide Teams ihre Wurfhölzer, immer von unten und senkrecht – kein Drehen um die eigene Achse. Erst alle Kubbs der Gegenseite umwerfen, ganz zum Schluss den König. Wer den König zu früh trifft, hat sofort verloren. Das Finale nach dem Essen und mit 25 Punkten die höchste Beute des Tages – hier kann sich alles drehen. Zeitbremse: Nach 25 Minuten ist Schluss, dann gewinnt das Team, bei dem weniger Kubbs stehen.",
+      "regel": "Abwechselnd werfen beide Teams ihre Wurfhölzer, immer von unten und senkrecht – kein Drehen um die eigene Achse. Erst alle Kubbs der Gegenseite umwerfen, ganz zum Schluss den König. Wer den König zu früh trifft, hat sofort verloren. Das Finale nach dem Essen und mit 40 Punkten fast ein Drittel des ganzen Tages – wer vorher weniger als 40 Punkte hinten liegt, kann hier noch gewinnen. Zeitbremse: Nach 25 Minuten ist Schluss, dann gewinnt das Team, bei dem weniger Kubbs stehen.",
       "aktiv": true
     }
   ]
