@@ -37,11 +37,15 @@ daten/teilnehmer.json alle Mitspieler + Team nach der Auslosung
 daten/spiele.json     alle Disziplinen mit Regeln und Punkten
 daten/ergebnisse.json wird von der App geschrieben
 daten/spruecke.json    die Sprüche des Kommentators
+daten/ablauf.json      der Zeitplan für den Reiter „Ablauf"
 ```
 
 ## Zeitplan (Start 15:30, Essen 18:30)
 
-Reihenfolge wie festgelegt. Die Nummer vor jedem Spiel steht auch in der App.
+Reihenfolge wie festgelegt. Die Nummer vor jedem Spiel steht auch in der App –
+und der ganze Plan steht dort im Reiter **🕒 Ablauf**, mit Uhrzeiten, Dauer und Punkten.
+Erledigte Spiele werden dort grau, das nächste wird golden hervorgehoben.
+Zeiten ändern: `daten/ablauf.json`.
 
 | Uhrzeit | Nr | Was |
 |---|---|---|

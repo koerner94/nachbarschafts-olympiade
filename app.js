@@ -4,7 +4,7 @@
    schreibt Aenderungen direkt in das Projekt zurueck – alle anderen sehen sie
    beim naechsten Aktualisieren. */
 
-const DATEIEN = ['konfig.json', 'teilnehmer.json', 'spiele.json', 'ergebnisse.json', 'spruecke.json'];
+const DATEIEN = ['konfig.json', 'teilnehmer.json', 'spiele.json', 'ergebnisse.json', 'spruecke.json', 'ablauf.json'];
 const SPEICHER = 'olympiade.';
 
 /* Zwei Links auf dieselbe App:
@@ -19,6 +19,7 @@ const zustand = {
   spiele: null,
   ergebnisse: null,
   spruecke: null,
+  ablauf: null,
   ansicht: 'rangliste',
   offenesSpiel: null,
   admin: DARF_EINTRAGEN && localStorage.getItem(SPEICHER + 'admin') === '1',
@@ -123,7 +124,7 @@ async function ladeAlles(still = false) {
     /* allSettled statt all: wenn eine einzelne Datei zickt, sollen die anderen
        trotzdem ankommen. Sonst faellt die ganze App auf den alten Stand zurueck. */
     const geladen = await Promise.allSettled(DATEIEN.map(holeDatei));
-    const schluessel = { 'konfig.json': 'konfig', 'teilnehmer.json': 'teilnehmer', 'spiele.json': 'spiele', 'ergebnisse.json': 'ergebnisse', 'spruecke.json': 'spruecke' };
+    const schluessel = { 'konfig.json': 'konfig', 'teilnehmer.json': 'teilnehmer', 'spiele.json': 'spiele', 'ergebnisse.json': 'ergebnisse', 'spruecke.json': 'spruecke', 'ablauf.json': 'ablauf' };
     let geklappt = 0;
     DATEIEN.forEach((datei, i) => {
       if (geladen[i].status !== 'fulfilled') return;
@@ -136,14 +137,15 @@ async function ladeAlles(still = false) {
     zustand.zuletzt = new Date();
     localStorage.setItem(SPEICHER + 'cache', JSON.stringify({
       konfig: zustand.konfig, teilnehmer: zustand.teilnehmer, spiele: zustand.spiele,
-      ergebnisse: zustand.ergebnisse, spruecke: zustand.spruecke, zeit: Date.now()
+      ergebnisse: zustand.ergebnisse, spruecke: zustand.spruecke,
+      ablauf: zustand.ablauf, zeit: Date.now()
     }));
   } catch (e) {
     zustand.offline = true;
     const cache = localStorage.getItem(SPEICHER + 'cache');
     if (cache && !zustand.spiele) {
       const c = JSON.parse(cache);
-      Object.assign(zustand, { konfig: c.konfig, teilnehmer: c.teilnehmer, spiele: c.spiele, ergebnisse: c.ergebnisse, spruecke: c.spruecke });
+      Object.assign(zustand, { konfig: c.konfig, teilnehmer: c.teilnehmer, spiele: c.spiele, ergebnisse: c.ergebnisse, spruecke: c.spruecke, ablauf: c.ablauf });
       zustand.zuletzt = new Date(c.zeit);
     }
     if (!still) toast('Keine Verbindung – zeige den letzten Stand');
@@ -453,6 +455,7 @@ function zeichne() {
     ? `<p class="macher nicht-drucken">${zeilen.join('<br>')}</p>` : '';
   const neuesHtml = banner + ({
     rangliste: ansichtRangliste,
+    ablauf: ansichtAblauf,
     spiele: ansichtSpiele,
     teams: ansichtTeams,
     eintragen: ansichtEintragen,
@@ -560,6 +563,56 @@ function ansichtRangliste() {
     ${spiegel}
     <h2 class="abschnitt">Entschiedene Spiele</h2>
     <div class="karte">${letzte || '<p style="color:var(--leise);margin:4px 0">Noch kein Ergebnis eingetragen. Das Feuer wartet.</p>'}</div>`;
+}
+
+/* ---- Ablauf ---- */
+function ansichtAblauf() {
+  const plan = zustand.ablauf?.punkte || [];
+  if (!plan.length) return '<div class="hinweis">Es ist noch kein Ablauf hinterlegt.</div>';
+
+  /* Das naechste Spiel ist das erste in der Reihenfolge, das noch kein Ergebnis hat.
+     So stimmt die Markierung immer, ganz ohne auf die Uhr zu schauen. */
+  const naechstes = aktiveSpiele().find((sp) => !ergebnisVon(sp))?.id || null;
+  const k = zustand.konfig;
+
+  const zeilen = plan.map((e) => {
+    if (e.spiel) {
+      const sp = aktiveSpiele().find((x) => x.id === e.spiel);
+      if (!sp) return '';
+      const erg = ergebnisVon(sp);
+      const dran = sp.id === naechstes;
+      const marke = erg
+        ? `<span class="punkt-pille" style="background:${erg.sieger === 'unentschieden' ? '#7b8794' : team(erg.sieger).farbe}">${
+            erg.sieger === 'unentschieden' ? 'Unentschieden' : esc(team(erg.sieger).name)}</span>`
+        : (dran ? '<span class="marke dran">als Nächstes</span>' : '<span class="marke offen">offen</span>');
+      return `<div class="plan-zeile ${dran ? 'dran' : ''} ${erg ? 'erledigt' : ''}">
+        <div class="plan-zeit">${esc(e.zeit)}</div>
+        <div class="plan-inhalt">
+          <div class="plan-kopf">
+            <span class="plan-titel">${sp.nr ? `<span class="nr">${sp.nr}</span> ` : ''}${esc(sp.name)}</span>
+            ${marke}
+          </div>
+          <div class="plan-unter">${sp.dauer ? sp.dauer + ' min · ' : ''}${sp.punkte} Punkte</div>
+          ${e.text ? `<div class="plan-notiz">${esc(e.text)}</div>` : ''}
+        </div>
+      </div>`;
+    }
+    const bilder = { info: '🔥', pause: '🥤', essen: '🍽️', ehrung: '🏆' };
+    return `<div class="plan-zeile fest ${esc(e.art || '')}">
+      <div class="plan-zeit">${esc(e.zeit)}</div>
+      <div class="plan-inhalt">
+        <div class="plan-titel">${bilder[e.art] || '•'} ${esc(e.titel || '')}</div>
+        ${e.text ? `<div class="plan-notiz">${esc(e.text)}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  const ende = plan[plan.length - 1]?.zeit || '';
+  return `
+    <p class="fortschritt">${esc([k.datum, k.ort].filter(Boolean).join(' · ') || 'Ablauf des Tages')}</p>
+    <div class="karte plan">${zeilen}</div>
+    <p class="fortschritt">Von ${esc(plan[0]?.zeit || '')} bis etwa ${esc(ende)} Uhr.
+      Die Zeiten sind ein Vorschlag, kein Fahrplan.</p>`;
 }
 
 /* ---- Spiele ---- */

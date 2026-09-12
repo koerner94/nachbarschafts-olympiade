@@ -1,0 +1,42 @@
+{
+  "_hinweis": "Der Zeitplan für den Reiter „Ablauf\". Ein Eintrag mit 'spiel' holt Name, Dauer und Punkte automatisch aus spiele.json und zeigt an, ob das Spiel schon entschieden ist. Ein Eintrag mit 'titel' ist ein fester Programmpunkt. 'art' steuert nur das Aussehen: info, pause, essen oder ehrung. Zeiten einfach hier ändern.",
+  "punkte": [
+    {
+      "zeit": "15:30",
+      "titel": "Ankommen & Begrüßung",
+      "art": "info",
+      "text": "Auslosung der beiden Teams in der App – ab hier brennt das Feuer."
+    },
+    { "zeit": "15:45", "spiel": "jenga" },
+    { "zeit": "16:10", "spiel": "sackwerfen", "text": "Toni kommt gegen 16 Uhr dazu." },
+    { "zeit": "16:30", "spiel": "blindschmecken" },
+    { "zeit": "16:50", "spiel": "dosenwerfen" },
+    { "zeit": "17:05", "spiel": "waeschekorb" },
+    { "zeit": "17:20", "spiel": "kronkorken" },
+    {
+      "zeit": "17:30",
+      "titel": "Pause",
+      "art": "pause",
+      "text": "Getränke, durchatmen, Grill anwerfen."
+    },
+    { "zeit": "17:45", "spiel": "montagsmaler" },
+    { "zeit": "18:10", "spiel": "limbo" },
+    {
+      "zeit": "18:30",
+      "titel": "Essen",
+      "art": "essen",
+      "text": "Große Pause. Danach kommt das Finale."
+    },
+    {
+      "zeit": "19:15",
+      "spiel": "wikingerschach",
+      "text": "Vor Sonnenuntergang anfangen! Im Dunkeln sieht man die Klötze nicht."
+    },
+    {
+      "zeit": "19:45",
+      "titel": "Siegerehrung",
+      "art": "ehrung",
+      "text": "Urkunden, Applaus und die Goldene Ananas."
+    }
+  ]
+}

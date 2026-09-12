@@ -192,17 +192,51 @@ h2.abschnitt:first-child { margin-top: 4px; }
   text-align: center; font-variant-numeric: tabular-nums; font-weight: 700;
 }
 
+/* ---------- Ablaufplan ---------- */
+.karte.plan { padding: 4px 14px; }
+.plan-zeile {
+  display: grid; grid-template-columns: 50px 1fr; gap: 10px;
+  padding: 12px 0; border-bottom: 1px solid var(--linie);
+}
+.plan-zeile:last-child { border-bottom: 0; }
+.plan-zeit {
+  font-variant-numeric: tabular-nums; font-weight: 800; font-size: 14px;
+  color: var(--nacht); padding-top: 1px;
+}
+@media (prefers-color-scheme: dark) { .plan-zeit { color: var(--gold-hell); } }
+.plan-kopf { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+.plan-titel { font-weight: 700; font-size: 15px; }
+.plan-unter { font-size: 12.5px; color: var(--leise); margin-top: 2px; }
+.plan-notiz { font-size: 12.5px; color: var(--leise); margin-top: 4px; font-style: italic; }
+
+.plan-zeile.erledigt .plan-titel { opacity: .55; }
+.plan-zeile.erledigt .plan-zeit { opacity: .5; }
+.plan-zeile.dran {
+  background: linear-gradient(90deg, rgba(201,162,39,.16), transparent 70%);
+  border-left: 3px solid var(--gold); margin-left: -14px; padding-left: 11px;
+  border-radius: 4px 0 0 4px;
+}
+.marke.dran { background: var(--gold); color: #352804; }
+
+.plan-zeile.fest .plan-titel { font-size: 14.5px; }
+.plan-zeile.essen { background: rgba(201,162,39,.12); margin: 0 -14px; padding: 14px; }
+.plan-zeile.essen .plan-titel { font-size: 16px; text-transform: uppercase; letter-spacing: .06em; }
+.plan-zeile.ehrung .plan-titel, .plan-zeile.info .plan-titel { color: var(--nacht); }
+@media (prefers-color-scheme: dark) {
+  .plan-zeile.ehrung .plan-titel, .plan-zeile.info .plan-titel { color: var(--gold-hell); }
+}
+
 /* ---------- Listen ---------- */
 .zeile { display: flex; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--linie); }
 .zeile:last-child { border-bottom: 0; }
 .zeile .haupt { flex: 1; min-width: 0; }
 .zeile .titel { font-weight: 600; }
-.zeile .nr {
+.zeile .nr, .plan-titel .nr {
   display: inline-block; min-width: 20px; height: 20px; line-height: 20px;
   text-align: center; border-radius: 50%; background: var(--nacht); color: #fff;
   font-size: 11.5px; font-weight: 800; margin-right: 3px; vertical-align: 1px;
 }
-@media (prefers-color-scheme: dark) { .zeile .nr { background: var(--gold); color: #2a2109; } }
+@media (prefers-color-scheme: dark) { .zeile .nr, .plan-titel .nr { background: var(--gold); color: #2a2109; } }
 .zeile .unter { font-size: 12.5px; color: var(--leise); }
 
 .marke {
@@ -263,11 +297,12 @@ label.haken input { width: auto; }
   padding-bottom: env(safe-area-inset-bottom);
 }
 #navi button {
-  flex: 1; background: none; border: 0; padding: 8px 2px 9px; cursor: pointer;
-  font-size: 10.5px; color: var(--leise); display: flex; flex-direction: column;
+  flex: 1; min-width: 0; background: none; border: 0; padding: 8px 1px 9px; cursor: pointer;
+  font-size: 10px; color: var(--leise); display: flex; flex-direction: column;
   align-items: center; gap: 2px; font-weight: 700;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-#navi button span { font-size: 20px; line-height: 1; }
+#navi button span { font-size: 19px; line-height: 1; }
 #navi button.aktiv { color: var(--nacht); }
 @media (prefers-color-scheme: dark) { #navi button.aktiv { color: var(--gold-hell); } }
 
