@@ -1,6 +1,6 @@
 {
   "_hinweis": "Wird von der App geschrieben. Je Spiel ein Eintrag mit dem Wert je Team. 'auszeichnungen' sind freie Ehrentitel fuer die Urkunden.",
-  "aktualisiert": "2026-09-12T18:48:45Z",
+  "aktualisiert": "2026-09-12T18:55:48Z",
   "stand": {
     "jenga": {
       "sieger": "b",
@@ -39,5 +39,16 @@
       "notiz": "Im Finale durch geschlossene Teamleistung"
     }
   },
-  "auszeichnungen": {}
+  "auszeichnungen": {
+    "Pia": "Abrissbirne des Tages",
+    "André": "Der Sieben-Kilometer-Schnipper",
+    "Toni": "Tiefflieger",
+    "Lea": "Feinschmeckerin",
+    "Thorsten": "Der blanke Wahnsinn",
+    "Torsten": "Der blanke Wahnsinn",
+    "Martina": "Der Königsstoß",
+    "Tina": "Jenga-Meisterin",
+    "Andi": "Der Nachzügler mit dem goldenen Stift",
+    "Mara": "Die gute Seele der Heckenscheren"
+  }
 }

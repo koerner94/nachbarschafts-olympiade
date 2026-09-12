@@ -58,6 +58,14 @@
       "kind": false,
       "team": "b",
       "notiz": ""
+    },
+    {
+      "name": "Andi",
+      "haushalt": "",
+      "kind": false,
+      "notiz": "kam später dazu",
+      "team": "a"
     }
-  ]
+  ],
+  "aktualisiert": "2026-09-12T18:55:48Z"
 }
