@@ -588,11 +588,19 @@ function ansichtRangliste() {
     const sg = ergebnis.sieger;
     const gewinner = sg === 'unentschieden' ? 'Unentschieden' : team(sg).name;
     const farbe = sg === 'unentschieden' ? '#7b8794' : team(sg).farbe;
+    /* Werte nur zeigen, wenn welche eingetragen wurden – sonst stehen dort nur Striche.
+       Die Notiz kommt immer dazu, dafür ist sie da. */
+    const hatWerte = spiel.typ !== 'sieger' && (ergebnis.a !== null || ergebnis.b !== null);
+    const teile = [
+      hatWerte
+        ? esc(team('a').name) + ': ' + wertText(spiel, ergebnis.a) + ' · ' + esc(team('b').name) + ': ' + wertText(spiel, ergebnis.b)
+        : esc(spiel.punkte + ' Punkte'),
+      ergebnis.notiz ? esc(ergebnis.notiz) : ''
+    ].filter(Boolean);
     return `<div class="zeile">
       <div class="haupt">
         <div class="titel">${sg === 'unentschieden' ? '🤝' : '🥇'} ${esc(spiel.name)}</div>
-        <div class="unter">${spiel.typ === 'sieger' ? esc(spiel.reihe) :
-          esc(team('a').name) + ': ' + wertText(spiel, ergebnis.a) + ' · ' + esc(team('b').name) + ': ' + wertText(spiel, ergebnis.b)}</div>
+        <div class="unter">${teile.join(' · ')}</div>
       </div>
       <span class="punkt-pille" style="background:${farbe}">${esc(gewinner)}</span>
     </div>`;

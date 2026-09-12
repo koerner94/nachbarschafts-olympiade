@@ -1,10 +1,14 @@
 {
   "_hinweis": "Wird von der App geschrieben. Je Spiel ein Eintrag mit dem Wert je Team. 'auszeichnungen' sind freie Ehrentitel fuer die Urkunden.",
-  "aktualisiert": "2026-09-12T14:43:13Z",
+  "aktualisiert": "2026-09-12T14:46:46Z",
   "stand": {
     "jenga": {
       "sieger": "b",
       "notiz": "Lea hat den Turm umgeworfen"
+    },
+    "sackwerfen": {
+      "sieger": "a",
+      "notiz": "Getroffen haben Lea und Antonia"
     }
   },
   "auszeichnungen": {}
